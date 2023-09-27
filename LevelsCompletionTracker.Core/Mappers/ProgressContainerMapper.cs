@@ -1,0 +1,30 @@
+using LevelsCompletionTracker.Core.Model;
+using LevelsCompletionTracker.Shared.DataTransferObjects;
+
+namespace LevelsCompletionTracker.Core.Mappers
+{
+    public static class ProgressContainerMapper
+    {
+        public static ProgressContainerDto ToDto(this ProgressContainer progressContainer)
+        {
+            return new ProgressContainerDto()
+            {
+                Id = progressContainer.Id,
+                LevelId = progressContainer.LevelId,
+                Progresses = progressContainer.Progresses.Select(progress => progress.ToDto()).ToList(),
+                CreatedAt = progressContainer.CreatedAt.ToShortDateString(),
+            };
+        }
+        
+        public static ProgressContainer ToEntity(this ProgressContainerDto progressContainerDto)
+        {
+            return new ProgressContainer()
+            {
+                Id = progressContainerDto.Id,
+                LevelId = progressContainerDto.LevelId,
+                Progresses = progressContainerDto.Progresses.Select(progressDto => progressDto.ToEnity()).ToList(),
+                CreatedAt = DateTime.Parse(progressContainerDto.CreatedAt),
+            };
+        }
+    }
+}
