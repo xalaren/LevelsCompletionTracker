@@ -25,6 +25,8 @@ namespace LevelsCompletionTracker.WebApi
             });
 
             CreateHostBuilder(args, port).Build().Run();
+
+            Console.ReadKey();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args, int port) => Host.CreateDefaultBuilder(args)
