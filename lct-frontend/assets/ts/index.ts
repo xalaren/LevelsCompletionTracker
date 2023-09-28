@@ -9,7 +9,7 @@ import {
     setAttemptsQueryAsync,
     setMainProgressQueryAsync,
     clearAllProgressesQueryAsync,
-    removeProgressQueryAsync, createProgressQueryAsync
+    removeProgressQueryAsync, createProgressQueryAsync, getProgressesPlainTextQueryAsync
 } from "./server-queries.ts";
 import {Level} from "./Modules/Models/Level.ts";
 import {OutputContainer} from "./Modules/Components/OutputContainer.ts";
@@ -208,6 +208,15 @@ async function removeProgress(levelId: number, progressId: number): Promise<void
     }
 }
 
+async function getProgressesAsPlainText(levelId: number): Promise<void> {
+    try {
+        const progresses = await getProgressesPlainTextQueryAsync(levelId);
+        openMessageModal(progresses, 'outfit-20-gray-regular');
+    } catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
 async function clearProgresses(levelId: number): Promise<void> {
     try {
         await clearAllProgressesQueryAsync(levelId);
@@ -336,6 +345,9 @@ function viewModalInputsClickHandle(target: HTMLElement) {
         case 'set-main-progress':
             setMainProgressAsync(attributes.index).then();
             break;
+        case 'get-progresses':
+            getProgressesAsPlainText(attributes.index).then();
+            break;
         case 'clear-progresses':
             clearProgresses(attributes.index).then();
             break;
@@ -360,8 +372,8 @@ function displayMessageOutput(text: string, messageColor?: string): void {
     clearElement('.levels__list');
     render('.levels__list', container.getHTML());
 }
-function openMessageModal(message: string) {
-    const labelContainer = new MediumLabelContainer(message);
+function openMessageModal(message: string, className?: string) {
+    const labelContainer = new MediumLabelContainer(message, className);
     const modalContainer = new Modal(labelContainer.getHTML());
 
     render('.page', modalContainer.getHTML());

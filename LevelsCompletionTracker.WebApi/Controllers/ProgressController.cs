@@ -31,7 +31,13 @@ namespace LevelsCompletionTracker.WebApi.Controllers
         [HttpDelete("remove-all")]
         public async Task<Response> RemoveAllAsync(int levelId)
         {
-            return await progressInteractor.ClearAllProgresses(levelId);
+            return await progressInteractor.ClearAllProgressesAsync(levelId);
+        }
+
+        [HttpGet("get")]
+        public async Task<Response> GetProgressesAsPlainTextAsync(int levelId)
+        {
+            return await progressInteractor.GetProgressesAsPlainTextAsync(levelId);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace LevelsCompletionTracker.Core.Mappers
             {
                 Id = progressContainer.Id,
                 LevelId = progressContainer.LevelId,
-                Progresses = progressContainer.Progresses.Select(progress => progress.ToDto()).ToList(),
+                Progresses = progressContainer.Progresses.Select(progress => progress.ToDto()).OrderByDescending(progress => progress.Id).ToList(),
                 CreatedAt = progressContainer.CreatedAt.ToShortDateString(),
             };
         }

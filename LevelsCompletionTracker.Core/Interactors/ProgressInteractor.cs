@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Text;
 using LevelsCompletionTracker.Core.Mappers;
 using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
@@ -133,7 +134,45 @@ namespace LevelsCompletionTracker.Core.Interactors
             }
         }
 
-        public async Task<Response> ClearAllProgresses(int levelId)
+        public async Task<Response<string>> GetProgressesAsPlainTextAsync(int levelId)
+        {
+            var builder = new StringBuilder();
+
+            var level = await levelRepository.GetAsync(levelId);
+
+            if(level == null)
+            {
+                return new Response<string>()
+                {
+                    Error = true,
+                    ResultMessage = "Level not found",
+                };
+            }
+
+            foreach(var container in level.ProgressContainers)
+            {
+                builder.Append(container.ToDto().CreatedAt + ":\n\n");
+
+                foreach(var progress in container.Progresses)
+                {
+                    builder.Append(progress.ToDto().ProgressText + "\n");
+                }
+            }
+
+            if(builder.Length == 0)
+            {
+                builder.AppendLine("None :(");
+            }
+
+            return new Response<string>()
+            {
+                Error = false,
+                ResultMessage = "Successfully get progresses",
+                Value = builder.ToString(),
+            };
+        }
+
+        public async Task<Response> ClearAllProgressesAsync(int levelId)
         {
             try
             {

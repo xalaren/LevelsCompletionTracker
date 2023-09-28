@@ -46,10 +46,11 @@ export class ViewModal extends Modal {
     
             <section class="level-view__further-progresses">
                 <h3 class="medium-30">Progresses:</h3>
-                <nav class="further-progresses__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
+                    <nav class="further-progresses__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
                     <input type="text" class="input-gray" id="progress-input">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="set-main-progress">Set main progress</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-further-progress">Add further progress</button>
+                    <button class="violet-tp" data-index="${this.level.id}" data-action="get-progresses">Plain text</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-progresses">Clear all</button>
                 </nav>
     `
@@ -75,7 +76,7 @@ export class ViewModal extends Modal {
         progresses.forEach(progress => {
             content += `
             <li class="progress__item">
-                <h3 class="medium-20">${progress.progressText}</h3>
+                <h3 class="outfit-25-gray-medium">${progress.progressText}</h3>
                 <button class="progress__delete-button" data-index="${levelId}" data-innerindex="${progress.id}" data-action="progress-remove">×</button>
             </li>
             `

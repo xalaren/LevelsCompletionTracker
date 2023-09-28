@@ -185,6 +185,20 @@ input[type="text"] {
     color: $dark-gray;
 }
 
+.outfit-25-gray-medium {
+    @include medium(25px);
+    color: $dark-gray;
+    font-family: "Outfit";
+    font-weight: 500;
+}
+
+.outfit-20-gray-regular {
+    @include medium(20px);
+    color: $dark-gray;
+    font-family: "Outfit";
+    font-weight: 400;
+}
+
 .mr-40 {
     margin-right: 40px;
 }
@@ -635,6 +649,9 @@ input[type="text"] {
 }
 
 .further-progresses__controls {
+    >* {
+        margin-bottom: 20px;
+    }
     >*:not(:last-child) {
         margin-right: 10px;
     }

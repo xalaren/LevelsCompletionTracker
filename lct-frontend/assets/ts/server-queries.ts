@@ -268,3 +268,30 @@ export async function clearAllProgressesQueryAsync(levelId: number) {
         throw new Error(error.message);
     }
 }
+
+export async function getProgressesPlainTextQueryAsync(levelId: number) {
+    const endpointName: string = 'ProgressController/get?levelId=' + levelId;
+    let result: string = '';
+
+    try {
+        const serverResponse = await fetch(url + endpointName);
+
+        await serverResponse.json()
+            .then(data => {
+                if(data.error) {
+                    throw new Error(data.resultMessage);
+                }
+
+                const regex = new RegExp('$', 'gm');
+                const subst = `<br>`;
+
+                result = data.value.replace(regex, subst);
+            });
+
+
+        return result;
+    }
+    catch (error: any) {
+        throw new Error(error.message);
+    }
+}
