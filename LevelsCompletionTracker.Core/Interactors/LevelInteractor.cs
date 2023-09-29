@@ -215,6 +215,11 @@ namespace LevelsCompletionTracker.Core.Interactors
 
                 level.Status = state;
 
+                if(level.MainProgress == 100)
+                {
+                    level.Status = LevelStatus.Completed;
+                }
+
                 await levelRepository.UpdateAsync(level);
                 unitOfWork.Commit();
 

@@ -3,6 +3,13 @@ using LevelsCompletionTracker.Shared.Output;
 
 namespace LevelsCompletionTracker.Core.Model
 {
+    public static class LevelStatus
+    {
+        public static string Active => "active";
+        public static string Abandoned => "abandoned";
+        public static string Completed => "completed";
+    }
+
     public class Level
     {
         private int mainProgress = 0;
@@ -27,11 +34,11 @@ namespace LevelsCompletionTracker.Core.Model
 
                 if (value == 100)
                 {
-                    Status = "completed";
+                    Status = LevelStatus.Completed;
                 }
                 else
                 {
-                    Status = "active";
+                    Status = LevelStatus.Active;
                 }
 
                 mainProgress = value;
@@ -43,7 +50,7 @@ namespace LevelsCompletionTracker.Core.Model
             get => status;
             set
             {
-                if (string.IsNullOrWhiteSpace(value) || (!string.Equals(value, "active") && !string.Equals(value, "abandoned") && !string.Equals(value, "completed")))
+                if (string.IsNullOrWhiteSpace(value) || (!string.Equals(value, LevelStatus.Active) && !string.Equals(value, LevelStatus.Abandoned) && !string.Equals(value, LevelStatus.Completed)))
                 {
                     throw new ArgumentOutOfRangeException("", "Status has only 3 variants: active, abandoned and completed");
                 }
