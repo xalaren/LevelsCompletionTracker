@@ -1,14 +1,4 @@
-using System.Configuration;
 using System.Diagnostics;
-using System.Security.Policy;
-using LevelsCompletionTracker.Adapter.ContextsEF;
-using LevelsCompletionTracker.Adapter.RepositoriesEF;
-using LevelsCompletionTracker.Adapter.Transaction;
-using LevelsCompletionTracker.Core.Interactors;
-using LevelsCompletionTracker.Core.Repositories;
-using LevelsCompletionTracker.Core.Transaction;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 namespace LevelsCompletionTracker.WebApi
 {

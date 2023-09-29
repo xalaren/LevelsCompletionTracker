@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ASP + frontend" type="CompoundRunConfigurationType">
-    <toRun name="LevelsCompletionTracker.WebApi: http" type="LaunchSettings" />
-    <toRun name="lct-frontend: run" type="js.build_tools.npm" />
-    <method v="2" />
-  </configuration>
-</component>
