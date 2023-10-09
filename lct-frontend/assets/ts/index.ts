@@ -231,8 +231,8 @@ async function clearProgresses(levelId: number): Promise<void> {
 
 async function shutdownApplication(): Promise<void> {
     try {
-        await shutdownServer();
         window.location.href = '../../assets/pages/blank.html';
+        await shutdownServer();
         window.close();
     } catch (error: any) {
         openMessageModal(error.message);
