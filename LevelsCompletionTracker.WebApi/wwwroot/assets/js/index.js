@@ -816,9 +816,9 @@ async function clearProgresses(levelId) {
 }
 async function shutdownApplication() {
   try {
+    window.close();
     window.location.href = "../../assets/pages/blank.html";
     await shutdownServer();
-    window.close();
   } catch (error) {
     openMessageModal(error.message);
   }
