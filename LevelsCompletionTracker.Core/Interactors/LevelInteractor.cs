@@ -68,7 +68,7 @@ namespace LevelsCompletionTracker.Core.Interactors
                 Author = levelDto.Author,
                 Attempts = 0,
                 Difficulty = levelDto.Difficulty,
-                Priority = existingLevels.Length + 1,
+                Priority = 0,
                 Status = "active",
             };
 
@@ -76,6 +76,8 @@ namespace LevelsCompletionTracker.Core.Interactors
             {
                 await levelRepository.CreateAsync(level);
                 unitOfWork.Commit();
+
+                RefreshNextPriorities(0, existingLevels.ToList());
 
                 return new Response
                 {

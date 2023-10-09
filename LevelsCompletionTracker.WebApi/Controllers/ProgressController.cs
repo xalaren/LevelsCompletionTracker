@@ -33,11 +33,5 @@ namespace LevelsCompletionTracker.WebApi.Controllers
         {
             return await progressInteractor.ClearAllProgressesAsync(levelId);
         }
-
-        [HttpGet("get")]
-        public async Task<Response> GetProgressesAsPlainTextAsync(int levelId)
-        {
-            return await progressInteractor.GetProgressesAsPlainTextAsync(levelId);
-        }
     }
 }

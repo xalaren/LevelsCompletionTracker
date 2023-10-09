@@ -1,6 +1,4 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 export default defineConfig({
         server: {
@@ -13,8 +11,28 @@ export default defineConfig({
             /*open: true,*/
         },
         build: {
+            minify: false,
+            cssMinify: false,
             emptyOutDir: true,
             outDir: '../LevelsCompletionTracker.WebApi/wwwroot',
+
+            rollupOptions: {
+                output: {
+                    chunkFileNames: "assets/ts/[name].ts",
+                    entryFileNames: "assets/js/[name].js",
+
+                    assetFileNames: ({name}) => {
+                        if (/\.css$/.test(name ?? "")) {
+                            return 'assets/css/[name][extname]';
+                        }
+
+                        if (/\.woff\d*$/.test(name ?? "")) {
+                            return 'assets/fonts/[name].[ext]';
+                        }
+                        return "assets/[name].[ext]";
+                    },
+                },
+            }
         },
 });
 

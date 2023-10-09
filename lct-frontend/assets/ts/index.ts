@@ -9,7 +9,7 @@ import {
     setAttemptsQueryAsync,
     setMainProgressQueryAsync,
     clearAllProgressesQueryAsync,
-    removeProgressQueryAsync, createProgressQueryAsync, getProgressesPlainTextQueryAsync
+    removeProgressQueryAsync, createProgressQueryAsync, shutdownServer
 } from "./server-queries.ts";
 import {Level} from "./Modules/Models/Level.ts";
 import {OutputContainer} from "./Modules/Components/OutputContainer.ts";
@@ -19,6 +19,7 @@ import {MediumLabelContainer} from "./Modules/Components/MediumLabelContainer.ts
 import {Modal} from "./Modules/Components/Modal.ts";
 import {ViewModal} from "./Modules/Components/ViewModal.ts";
 import {Progress} from "./Modules/Models/Progress.ts";
+import {PlainTextContainer} from "./Modules/Components/PlainTextViewContainerl.ts";
 
 let levels: Level[];
 let filteredLevels: Level[];
@@ -30,7 +31,7 @@ function init(): void {
     filteredLevels = [];
 
     setupStaticEventListeners();
-    updateAll().then();
+    updateAll();
 }
 
 //Levels array interactions
@@ -210,8 +211,10 @@ async function removeProgress(levelId: number, progressId: number): Promise<void
 
 async function getProgressesAsPlainText(levelId: number): Promise<void> {
     try {
-        const progresses = await getProgressesPlainTextQueryAsync(levelId);
-        openMessageModal(progresses, 'outfit-20-gray-regular');
+        const progressContainers = getLocalLevel(levelId).progressContainers;
+
+        const container = new PlainTextContainer(progressContainers);
+        openMessageModal(container.getHTML());
     } catch (error: any) {
         openMessageModal(error.message);
     }
@@ -226,6 +229,16 @@ async function clearProgresses(levelId: number): Promise<void> {
     }
 }
 
+async function shutdownApplication(): Promise<void> {
+    try {
+        await shutdownServer();
+        window.location.href = '../../assets/pages/blank.html';
+        window.close();
+    } catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
 //Event listeners setup
 
 function setupStaticEventListeners(): void {
@@ -235,6 +248,12 @@ function setupStaticEventListeners(): void {
     const createButton: HTMLElement | null = document.getElementById('create-level-button');
     if (createButton) {
         createButton.addEventListener('click', openCreationModal);
+    }
+
+    const shutdownButton: HTMLElement | null = document.getElementById('shutdown-button');
+
+    if(shutdownButton) {
+        shutdownButton.addEventListener('click', shutdownApplication);
     }
 }
 
@@ -354,7 +373,7 @@ function viewModalInputsClickHandle(target: HTMLElement) {
         case 'progress-remove':
             removeProgress(attributes.index, attributes.innerIndex!).then();
             break;
-        case 'add-further-progress':
+        case 'add-extra-progress':
             createProgress(attributes.index).then();
             break;
     }

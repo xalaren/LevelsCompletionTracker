@@ -16,10 +16,15 @@ namespace LevelsCompletionTracker.WebApi
         public async Task Start(CancellationToken cancellationToken)
         {
             var url = await GetUrlWhenServerIsReady(cancellationToken);
-            Process.Start(new ProcessStartInfo(url)
+
+            var process = new ProcessStartInfo(url)
             {
                 UseShellExecute = true,
-            });
+            };
+
+            Process.Start(process);
+
+            PrintUrl(url);
         }
 
         private async Task<string> GetUrlWhenServerIsReady(CancellationToken cancellationToken)
@@ -37,6 +42,19 @@ namespace LevelsCompletionTracker.WebApi
             } while (sw.Elapsed < ServerTimeout);
 
             return addresses.Addresses.Select(x => x.Replace("[::]", "localhost").Replace("+:", "localhost:")).Single();
+        }
+
+        private void PrintUrl(string url)
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+            Console.Write($"Application server is started on ");
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine(url);
+
+            Console.ResetColor();
         }
     }
 }

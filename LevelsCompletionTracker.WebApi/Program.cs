@@ -5,6 +5,7 @@ using LevelsCompletionTracker.Core.Interactors;
 using LevelsCompletionTracker.Core.Repositories;
 using LevelsCompletionTracker.Core.Transaction;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace LevelsCompletionTracker.WebApi
@@ -58,15 +59,18 @@ namespace LevelsCompletionTracker.WebApi
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
-            
+
             app.MapControllers();
+
+            app.MapPost("/api/shutdown", () =>
+            {
+                app.StopAsync();
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.Run();
-
-            Console.ReadKey();
         }
     }
 }

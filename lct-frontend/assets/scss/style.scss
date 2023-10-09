@@ -92,6 +92,21 @@ input[type="text"] {
     }
 }
 
+.red-big-rounded-no-tp {
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    font-size: 20px;
+    color: $white;
+    background-color: $red;
+    transition: ease-in-out .3s;
+    padding: 0;
+
+    &:hover {
+        box-shadow: 0 0 25px 0 $red-shadow;
+    }
+}
+
 .arrow-button {
     @extend .tp-bg;
     width: 20px;
@@ -381,10 +396,6 @@ input[type="text"] {
 
 .main__inputs {
     margin-top: 40px;
-
-    *:not(:first-child) {
-        margin-top: $common-margin;
-    }
 }
 
 .inputs__search {
@@ -585,7 +596,19 @@ input[type="text"] {
 
 .level-view {
     width: 1080px;
-    margin-top: 50px;
+    margin: auto 0;
+    max-height: 900px;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        background: transparent;
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray1;
+        border-radius: 10px;
+    }
 }
 
 .level-view__name-block {
@@ -642,13 +665,13 @@ input[type="text"] {
     }
 }
 
-.level-view__further-progresses {
+.level-view__extra-progresses {
     >*:not(:last-child) {
         margin-bottom: $common-margin;
     }
 }
 
-.further-progresses__controls {
+.extra-progresses__controls {
     >* {
         margin-bottom: 20px;
     }
@@ -657,7 +680,7 @@ input[type="text"] {
     }
 }
 
-.further-progresses__content {
+.extra-progresses__content {
     position: relative;
 
     .label-black::after {
@@ -733,6 +756,13 @@ input[type="text"] {
     height: 40px;
     color: $violet2;
     align-items: center;
+}
+
+.inputs__button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $common-margin;
 }
 
 
