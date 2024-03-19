@@ -5,7 +5,7 @@ namespace LevelsCompletionTracker.Core.Model
         public int Id { get; set; }
 
         public int LevelId { get; set; }
-        public Level Level { get; set; }
+        public Level Level { get; set; } = null!;
 
         public ICollection<Progress> Progresses { get; set; } = new List<Progress>();
 

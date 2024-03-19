@@ -8,7 +8,7 @@
         public int Id { get; set; }
         
         public int ProgressContainerId { get; set; }
-        public ProgressContainer ProgressContainer { get; set; }
+        public ProgressContainer ProgressContainer { get; set; } = null!;
 
         public int PercentageStart
         {
