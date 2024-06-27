@@ -1,33 +1,33 @@
 @import "fontimport.scss";
 
-$bg-color: #17072C;
-$main-violet: #5200FF;
-$dark-violet: #370E6B;
-$violet-shadow: rgba(97, 0, 255, 0.40);
+$bg-color: #17072c;
+$main-violet: #5200ff;
+$dark-violet: #370e6b;
+$violet-shadow: rgba(97, 0, 255, 0.4);
 $orange-shadow: rgba(255, 122, 47, 0.4);
 $red-shadow: rgba(255, 47, 59, 0.4);
 $green-shadow: rgba(23, 182, 144, 0.4);
-$yellow-shadow: rgba(255, 229, 0, 0.60);
-$white: #FFFFFF;
+$yellow-shadow: rgba(255, 229, 0, 0.6);
+$white: #ffffff;
 $black: #000000;
-$gray1: #ABABAB;
-$gray2: #EBEBEB;
-$green: #17B690;
-$orange: #FF7A2F;
-$light-orange: #FFF2E5;
-$red: #FF2F3B;
-$light-red: #FFE5E7;
-$light-green: #E7FFF6;
-$light-violet: #F3EDFF;
+$gray1: #ababab;
+$gray2: #ebebeb;
+$green: #17b690;
+$orange: #ff7a2f;
+$light-orange: #fff2e5;
+$red: #ff2f3b;
+$light-red: #ffe5e7;
+$light-green: #e7fff6;
+$light-violet: #f3edff;
 $violet2: #6f45a7;
 $dark-gray: #555555;
-$yellow: #FFD600;
+$yellow: #ffd600;
 
 $common-margin: 40px;
 
 body {
     background-color: $bg-color;
-    font-family: 'Golos Text', serif;
+    font-family: "Golos Text", serif;
 }
 
 h1 {
@@ -54,14 +54,12 @@ input[type="text"] {
     min-height: 100%;
 }
 
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     box-sizing: content-box;
     padding: 0 20px;
 }
-
 
 .search {
     min-height: 60px;
@@ -85,7 +83,7 @@ input[type="text"] {
     font-size: 20px;
     color: $white;
     background-color: $main-violet;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
 
     &:hover {
         box-shadow: 0 0 25px 0 $violet-shadow;
@@ -99,7 +97,7 @@ input[type="text"] {
     font-size: 20px;
     color: $white;
     background-color: $red;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
     padding: 0;
 
     &:hover {
@@ -115,7 +113,7 @@ input[type="text"] {
     margin: 0;
 
     svg path {
-        transition: fill ease-in-out .3s;
+        transition: fill ease-in-out 0.3s;
     }
 
     &:hover svg path {
@@ -123,9 +121,8 @@ input[type="text"] {
     }
 }
 
-
 %label-template {
-    font-family: 'Golos Text', sans-serif;
+    font-family: "Golos Text", sans-serif;
     font-size: 16px;
     font-weight: 500;
 }
@@ -223,7 +220,7 @@ input[type="text"] {
     border-radius: 15px;
     color: $orange;
     background-color: $light-orange;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
 
     &:hover {
         background-color: $orange;
@@ -237,7 +234,7 @@ input[type="text"] {
     border-radius: 15px;
     color: $red;
     background-color: $light-red;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
 
     &:hover {
         background-color: $red;
@@ -251,7 +248,7 @@ input[type="text"] {
     border-radius: 15px;
     color: $green;
     background-color: $light-green;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
 
     &:hover {
         background-color: $green;
@@ -265,7 +262,7 @@ input[type="text"] {
     border-radius: 15px;
     color: $main-violet;
     background-color: $light-violet;
-    transition: ease-in-out .3s;
+    transition: ease-in-out 0.3s;
 
     &:hover {
         background-color: $main-violet;
@@ -286,8 +283,7 @@ input[type="text"] {
     width: 100%;
     height: 100%;
     position: fixed;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.4);
     overflow: auto;
     display: flex;
     justify-content: center;
@@ -317,7 +313,7 @@ input[type="text"] {
     right: 0;
     top: 0;
     color: $dark-gray;
-    transition: all ease-in-out .3s;
+    transition: all ease-in-out 0.3s;
 
     &:hover {
         background-color: $red;
@@ -375,8 +371,6 @@ input[type="text"] {
     user-select: none;
 }
 
-
-
 /*  Header styles start  */
 
 .header {
@@ -388,7 +382,6 @@ input[type="text"] {
 /* Header styles end */
 
 /*  Main styles start  */
-
 
 .main {
     width: 100%;
@@ -410,7 +403,7 @@ input[type="text"] {
     margin-top: $common-margin;
     padding: 40px;
     border-radius: 10px;
-    background-color: rgba(181, 147, 255, 0.10);
+    background-color: rgba(181, 147, 255, 0.1);
     margin-bottom: $common-margin;
 }
 
@@ -418,7 +411,7 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
 
-    >*:not(:first-child) {
+    > *:not(:first-child) {
         margin-top: $common-margin;
     }
 }
@@ -431,10 +424,9 @@ input[type="text"] {
     display: grid;
     grid-template-columns: 100px 1fr 1.6fr;
     border: solid 3px transparent;
-    transition: all ease-in-out .3s;
+    transition: all ease-in-out 0.3s;
 
-
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-right: 20px;
     }
 }
@@ -461,7 +453,7 @@ input[type="text"] {
     flex-direction: column;
     justify-content: space-between;
 
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-bottom: 20px;
     }
 }
@@ -520,14 +512,12 @@ input[type="text"] {
                 margin-right: 20px;
             }
         }
-
     }
 }
 
 @media (max-width: 590px) {
     .level {
         display: none;
-
     }
 
     .temp-disable {
@@ -545,7 +535,7 @@ input[type="text"] {
     justify-content: space-between;
     min-height: 100%;
 
-    >div:not(:last-child) {
+    > div:not(:last-child) {
         margin-bottom: $common-margin;
     }
     p {
@@ -569,7 +559,7 @@ input[type="text"] {
     margin-right: 20px;
     border-radius: 30px;
     border: solid 3px $white;
-    transition: all ease-in-out .3s;
+    transition: all ease-in-out 0.3s;
     cursor: pointer;
     user-select: none;
 
@@ -598,7 +588,7 @@ input[type="text"] {
     width: 1080px;
     margin: auto 0;
     max-height: 900px;
-    overflow: scroll;
+    overflow: auto;
 
     &::-webkit-scrollbar {
         background: transparent;
@@ -612,15 +602,13 @@ input[type="text"] {
 }
 
 .level-view__name-block {
-
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-bottom: 20px;
     }
 }
 
 .level-view__content {
-
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-bottom: $common-margin;
     }
 
@@ -633,7 +621,7 @@ input[type="text"] {
     display: flex;
     align-items: center;
 
-    >img {
+    > img {
         margin-right: 60px;
     }
 }
@@ -646,7 +634,7 @@ input[type="text"] {
     .progress-block__content {
         justify-content: flex-start;
 
-        >*:not(:last-child) {
+        > *:not(:last-child) {
             margin-right: 20px;
         }
     }
@@ -666,16 +654,16 @@ input[type="text"] {
 }
 
 .level-view__extra-progresses {
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-bottom: $common-margin;
     }
 }
 
 .extra-progresses__controls {
-    >* {
+    > * {
         margin-bottom: 20px;
     }
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-right: 10px;
     }
 }
@@ -684,7 +672,7 @@ input[type="text"] {
     position: relative;
 
     .label-black::after {
-        content: '';
+        content: "";
         width: 85%;
         height: 1px;
         position: absolute;
@@ -693,7 +681,7 @@ input[type="text"] {
         background-color: $gray1;
     }
 
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-bottom: $common-margin;
     }
 }
@@ -703,10 +691,10 @@ input[type="text"] {
     flex-wrap: wrap;
     flex-shrink: initial;
 
-    >* {
+    > * {
         margin-bottom: 20px;
     }
-    >*:not(:last-child) {
+    > *:not(:last-child) {
         margin-right: 10px;
     }
 }
@@ -764,6 +752,3 @@ input[type="text"] {
     align-items: center;
     margin-bottom: $common-margin;
 }
-
-
-
