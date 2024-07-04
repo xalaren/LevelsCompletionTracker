@@ -179,6 +179,17 @@ async function addAttemptsAsync(levelId: number):Promise<void> {
     }
 }
 
+async function setAttemptsAsync(levelId: number): Promise<void> {
+    try {
+        await setAttemptsQueryAsync(levelId, getAttemptsCount(), false);
+        await updateModalLevelInfo(levelId);
+        clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
+    }
+    catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
 async function setMainProgressAsync(levelId: number): Promise<void> {
     try {
         await setMainProgressQueryAsync(levelId, getMainProgressCount());
@@ -360,6 +371,9 @@ function viewModalInputsClickHandle(target: HTMLElement) {
             break;
         case 'add-attempts':
             addAttemptsAsync(attributes.index).then();
+            break;
+        case 'set-attempts':
+            setAttemptsAsync(attributes.index).then();
             break;
         case 'set-main-progress':
             setMainProgressAsync(attributes.index).then();

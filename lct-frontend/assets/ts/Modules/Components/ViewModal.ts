@@ -40,6 +40,7 @@ export class ViewModal extends Modal {
                 <nav class="attempt-block__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
                     <input type="text" class="input-gray" id="attempts-count-input">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-attempts">Add attempts</button>
+                    <button class="violet-tp" data-index="${this.level.id}" data-action="set-attempts">Set attempts</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-attempts">Clear current</button>
                 </nav>
             </section>

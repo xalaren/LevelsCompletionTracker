@@ -585,6 +585,7 @@ class ViewModal extends Modal {
                 <nav class="attempt-block__controls ${level.status == Statuses.Abandoned ? "disabled" : ""}">
                     <input type="text" class="input-gray" id="attempts-count-input">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-attempts">Add attempts</button>
+                    <button class="violet-tp" data-index="${this.level.id}" data-action="set-attempts">Set attempts</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-attempts">Clear current</button>
                 </nav>
             </section>
@@ -771,6 +772,15 @@ async function addAttemptsAsync(levelId) {
     openMessageModal(error.message);
   }
 }
+async function setAttemptsAsync(levelId) {
+  try {
+    await setAttemptsQueryAsync(levelId, getAttemptsCount(), false);
+    await updateModalLevelInfo(levelId);
+    clearInputs(document.getElementById("attempts-count-input"));
+  } catch (error) {
+    openMessageModal(error.message);
+  }
+}
 async function setMainProgressAsync(levelId) {
   try {
     await setMainProgressQueryAsync(levelId, getMainProgressCount());
@@ -914,6 +924,9 @@ function viewModalInputsClickHandle(target) {
       break;
     case "add-attempts":
       addAttemptsAsync(attributes.index).then();
+      break;
+    case "set-attempts":
+      setAttemptsAsync(attributes.index).then();
       break;
     case "set-main-progress":
       setMainProgressAsync(attributes.index).then();
