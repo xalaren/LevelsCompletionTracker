@@ -18,12 +18,14 @@ namespace LevelsCompletionTracker.Core.Mappers
         
         public static ProgressContainer ToEntity(this ProgressContainerDto progressContainerDto)
         {
+            DateTime createdAt = progressContainerDto.CreatedAt == null ? DateTime.UtcNow : DateTime.Parse(progressContainerDto.CreatedAt);
+
             return new ProgressContainer()
             {
                 Id = progressContainerDto.Id,
                 LevelId = progressContainerDto.LevelId,
                 Progresses = progressContainerDto.Progresses.Select(progressDto => progressDto.ToEnity()).ToList(),
-                CreatedAt = DateTime.Parse(progressContainerDto.CreatedAt),
+                CreatedAt = createdAt,
             };
         }
     }

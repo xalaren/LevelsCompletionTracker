@@ -1,3 +1,4 @@
+import { CircleRun } from "./CircleRun.ts";
 import {ProgressContainer} from "./ProgressContainer.ts";
 
 export class Level {
@@ -7,9 +8,13 @@ export class Level {
     attempts: number;
     priority: number;
     mainProgress: number;
+    circleRunsTotalCount: number;
+    circleRunsTotalAttempts: number;
     difficulty: string;
     status: Statuses;
     progressContainers: ProgressContainer[];
+    circleRuns: CircleRun[];
+    
     constructor(name: string, author: string,
                 difficulty: string, status:Statuses = Statuses.Active) {
         this.id = 0;
@@ -20,8 +25,11 @@ export class Level {
         this.status = status;
         this.mainProgress = 0;
         this.priority = 0;
+        this.circleRunsTotalCount = 0;
+        this.circleRunsTotalAttempts = 0;
 
         this.progressContainers = [];
+        this.circleRuns = [];
     }
 }
 

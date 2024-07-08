@@ -54,6 +54,7 @@ export class LevelContainer extends Component {
             <div class="progress-block__bottom ${this.grayscale}">  
                 <div class="bottom__attempts-counter">
                     <p class="attempts-label label-violet">${this.level.attempts} attempts</p>
+                    <p class="attempts-label label-violet">${this.level.circleRunsTotalCount} circle runs</p>
                 </div>
                 <div class="bottom__controls">
                     <button class="down-arrow-button arrow-button" data-index="${this.level.id}" data-action="decreasePriority">

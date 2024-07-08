@@ -1,12 +1,11 @@
-﻿using LevelsCompletionTracker.Core.Model;
+﻿
+using LevelsCompletionTracker.Core.Model;
 
 namespace LevelsCompletionTracker.Core.Repositories
 {
     public interface ICircleRunRepository
     {
-        Task<CircleRun> FindByDateTimeInLevel(Level level, DateTime date);
-        Task<CircleRun?> GetAsync(int circleRunId);
-        Task CreateAsync(CircleRun circleRun);
+        Task<CircleRun?> FindByDateTimeInLevel(int levelId, DateTime now);
         void Update(CircleRun circleRun);
         void Remove(CircleRun circleRun);
     }

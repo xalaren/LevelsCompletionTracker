@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using LevelsCompletionTracker.Core.Model;
+﻿using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Shared.DataTransferObjects;
 
 namespace LevelsCompletionTracker.Core.Mappers
@@ -14,20 +12,30 @@ namespace LevelsCompletionTracker.Core.Mappers
                 throw new ArgumentNullException("Level was null", nameof(level));
             }
 
+            var circleRunsTotalCount = level.CircleRuns.Sum(circleRun => circleRun.Count);
+            var circleRunsTotalAttempts = level.CircleRuns.Sum(circleRun => circleRun.Attempts);
+
             return new LevelDto()
             {
                 Id = level.Id,
                 Name = level.Name,
                 Author = level.Author,
-                Attempts = level.Attempts,
                 Difficulty = level.Difficulty,
                 Status = level.Status,
                 MainProgress = level.MainProgress,
                 Priority = level.Priority,
+                CircleRunsTotalCount = circleRunsTotalCount,
+                CircleRunsTotalAttempts = circleRunsTotalAttempts,
+                Attempts = level.Attempts + circleRunsTotalAttempts,
                 ProgressContainers = level.ProgressContainers
                     .Select(container => container.ToDto())
                     .Where(container => container.Progresses.Count > 0)
                     .OrderByDescending(container => container.Id).ToList(),
+                CircleRuns = level.CircleRuns
+                    .Select(circleRun => circleRun.ToDto())
+                    .Where(circleRun => circleRun.Count > 0)
+                    .OrderByDescending(circleRun => circleRun.CreatedAt)
+                    .ToList(),
             };
         }
 
