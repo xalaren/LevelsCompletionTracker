@@ -20,6 +20,7 @@ import {Modal} from "./Modules/Components/Modal.ts";
 import {ViewModal} from "./Modules/Components/ViewModal.ts";
 import {Progress} from "./Modules/Models/Progress.ts";
 import {PlainTextContainer} from "./Modules/Components/PlainTextViewContainerl.ts";
+import { CircleRunsViewModal } from "./Modules/Components/CircleRunsViewModal.ts";
 
 let levels: Level[];
 let filteredLevels: Level[];
@@ -292,6 +293,14 @@ function setupViewModalListeners(): void {
     buttons.forEach(button => button.addEventListener('click', event => viewModalInputsClickHandle(event.target as HTMLElement)))
 }
 
+function setupCircleRunsViewModalListeners(): void {
+    setupModalEventListeners();
+
+    const modal: HTMLElement = document.querySelector('.level-view__content') as HTMLElement;
+    // const buttons: NodeListOf<HTMLButtonElement> = modal.querySelectorAll('button');
+    // buttons.forEach(button => button.addEventListener('click', event => viewModalInputsClickHandle(event.target as HTMLElement)))
+}
+
 function setupCreationModalEventListeners() {
     setupModalEventListeners();
     const containers: NodeListOf<HTMLElement> = document.querySelectorAll('.img-container');
@@ -390,6 +399,9 @@ function viewModalInputsClickHandle(target: HTMLElement) {
         case 'add-extra-progress':
             createProgress(attributes.index).then();
             break;
+        case 'open-circle-runs':
+            openCircleRunsViewModal(attributes.index);
+            break;
     }
 }
 
@@ -427,6 +439,21 @@ function openViewModal(id: number) {
 
     render('.page', viewModal.getHTML());
     setupViewModalListeners();
+}
+
+function openCircleRunsViewModal(id: number) {
+    let level = levels.find(level => level.id === id);
+
+    if(!level) return;
+
+    let circleRunsViewModal = new CircleRunsViewModal(level);
+
+    render('.page', circleRunsViewModal.getHTML());
+    circleRunsViewModal.applyAttemptsChartConfig();
+    circleRunsViewModal.applyCountsChartConfig();
+    
+    setupCircleRunsViewModalListeners();
+
 }
 
 function closeModal(target: Element | HTMLElement): void {

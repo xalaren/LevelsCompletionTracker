@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.41",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "fs-extra": "^11.1.1",
     "prettier": "^3.0.3",
@@ -16,5 +17,8 @@
     "vite": "^4.5.3",
     "vite-plugin-mkcert": "^1.16.0",
     "vite-plugin-static-copy": "^0.17.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.3"
   }
 }

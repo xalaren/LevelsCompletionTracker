@@ -43,7 +43,7 @@ button {
 }
 
 input[type="text"] {
-    padding: 0 20px;
+    padding: 0 10px;
     outline: none;
     border: none;
 }
@@ -273,9 +273,9 @@ input[type="text"] {
 
 .violet-tp {
     @extend .violet-small-tp-rounded;
-    min-height: 40px;
+    min-height: 50px;
     font-size: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: $main-violet;
 }
 
@@ -327,12 +327,18 @@ input[type="text"] {
 
 .input-gray {
     border: none;
-    height: 40px;
-    border-radius: 10px;
+    height: 50px;
+    border-radius: 5px;
     background-color: $gray2;
     color: $dark-gray;
     font-size: 20px;
     font-weight: 500;
+    transition: .3s ease-in-out;
+
+    &:focus {
+        background-color: $light-violet;
+        color: $main-violet;
+    }
 }
 
 .dynamic-font {
@@ -473,6 +479,11 @@ input[type="text"] {
 .progress-block__bottom {
     display: flex;
     justify-content: space-between;
+
+    .bottom__attempts-counter {
+        display: flex;
+        gap: 30px;
+    }
 }
 
 .progress-bar {
@@ -627,7 +638,7 @@ input[type="text"] {
 }
 
 .level-view__progress {
-    .label-black {
+    >*:not(:last-child) {
         margin-bottom: 10px;
     }
 
@@ -671,14 +682,12 @@ input[type="text"] {
 .extra-progresses__content {
     position: relative;
 
-    .label-black::after {
-        content: "";
-        width: 85%;
-        height: 1px;
-        position: absolute;
-        right: 0;
-        top: 7px;
-        background-color: $gray1;
+    .label-black {
+        width: 100%;
+        background-color: $main-violet;
+        color: $white;
+        padding: 10px;
+        border-radius: 5px;
     }
 
     > *:not(:last-child) {
@@ -751,4 +760,16 @@ input[type="text"] {
     justify-content: space-between;
     align-items: center;
     margin-bottom: $common-margin;
+}
+
+.circle-run-view__content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 50px;
+}
+
+.circle-run-view__left {
+    >*:not(:last-child) {
+        margin-bottom: 40px;
+    }
 }

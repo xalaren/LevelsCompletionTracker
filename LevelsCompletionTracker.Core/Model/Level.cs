@@ -61,5 +61,6 @@ namespace LevelsCompletionTracker.Core.Model
         }
 
         public ICollection<ProgressContainer> ProgressContainers { get; set; } = new List<ProgressContainer>();
+        public ICollection<CircleRun> CircleRuns { get; set; } = new List<CircleRun>();
     }
 }

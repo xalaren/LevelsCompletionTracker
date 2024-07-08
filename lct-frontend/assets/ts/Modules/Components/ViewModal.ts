@@ -32,9 +32,12 @@ export class ViewModal extends Modal {
                     </div>
                     <h3 class="content__progress-percent medium-30-violet-shadow" id="main-progress-count">${this.level.mainProgress}%</h3>
                 </div>
+
+                <button class="violet-tp" data-index="${this.level.id}" data-action="open-circle-runs">Circle runs feature</button>
     
             </section>
-    
+
+            
             <section class="level-view__attempt-block">
                 <h3 class="medium-30-violet-shadow attempt-block__total" id="attempts-counter">${this.level.attempts} attempts</h3>
                 <nav class="attempt-block__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
@@ -54,6 +57,7 @@ export class ViewModal extends Modal {
                     <button class="violet-tp" data-index="${this.level.id}" data-action="get-progresses">Plain text</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-progresses">Clear all</button>
                 </nav>
+            </section>
     `
 
         level.progressContainers.forEach(container => {

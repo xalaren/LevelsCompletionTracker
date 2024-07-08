@@ -1,4 +1,5 @@
-﻿using LevelsCompletionTracker.Adapter.ContextsEF;
+﻿using System.Net.Mime;
+using LevelsCompletionTracker.Adapter.ContextsEF;
 using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,10 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
                     .Collection(level => level.ProgressContainers)
                     .LoadAsync();
 
+                await context.Entry(level)
+                    .Collection(level => level.CircleRuns)
+                    .LoadAsync();
+
                 foreach (var progressContainer in level.ProgressContainers)
                 {
                     await context.Entry(progressContainer)
@@ -53,6 +58,10 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
             {
                 await context.Entry(level)
                     .Collection(level => level.ProgressContainers)
+                    .LoadAsync();
+
+                await context.Entry(level)
+                    .Collection(level => level.CircleRuns)
                     .LoadAsync();
                 
                 foreach (var progressContainer in level.ProgressContainers)

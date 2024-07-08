@@ -15,7 +15,7 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
         {
             this.context = context;
         }
-        public async Task<ProgressContainer> FindByDateTimeInLevel(Level level, DateTime date)
+        public async Task<ProgressContainer?> FindByDateTimeInLevel(Level level, DateTime date)
         {
             var progressContainer = level.ProgressContainers.FirstOrDefault(container =>
                 container.CreatedAt.IsComparedByDate(date));

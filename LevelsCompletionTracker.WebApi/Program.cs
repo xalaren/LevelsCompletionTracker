@@ -35,9 +35,11 @@ namespace LevelsCompletionTracker.WebApi
             builder.Services.AddScoped<ILevelRepository, LevelRepository>();
             builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
             builder.Services.AddScoped<IProgressContainerRepository, ProgressContainerRepository>();
+            builder.Services.AddScoped<ICircleRunRepository, CircleRunRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<LevelInteractor>();
             builder.Services.AddScoped<ProgressInteractor>();
+            builder.Services.AddScoped<CircleRunInteractor>();
 
 
             builder.Services.AddControllers();

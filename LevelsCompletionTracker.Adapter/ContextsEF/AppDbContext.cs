@@ -8,6 +8,7 @@ namespace LevelsCompletionTracker.Adapter.ContextsEF
         public DbSet<Level> Levels { get; set; }
         public DbSet<Progress> Progresses { get; set; }
         public DbSet<ProgressContainer> ProgressContainers { get; set; }
+        public DbSet<CircleRun> CircleRuns { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
