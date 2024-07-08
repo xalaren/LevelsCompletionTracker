@@ -262,11 +262,13 @@ async function addRun(levelId: number): Promise<void> {
             id: 0,
             attempts: attempts,
             count: 0,
+            levelId: levelId,
             createdAt: new Date(),
-            levelId: levelId
         };
 
-        await createCircleRunQueryAsync(circleRun, levelId);
+        console.log(circleRun);
+
+        await createCircleRunQueryAsync(circleRun);
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
         openMessageModal(error.message);

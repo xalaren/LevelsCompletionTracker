@@ -289,10 +289,10 @@ export async function clearAllProgressesQueryAsync(levelId: number) {
     }
 }
 
-export async function createCircleRunQueryAsync(circleRun: CircleRun, levelId: number) {
+export async function createCircleRunQueryAsync(circleRun: CircleRun) {
     const endpointName: string = `CircleRunController/create`;
     try {
-        const serverResponse = await fetch(`${url}${endpointName}?levelId=${levelId}`,
+        const serverResponse = await fetch(`${url}${endpointName}`,
             {
                 method: 'POST',
                 mode: 'cors',
