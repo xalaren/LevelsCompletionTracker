@@ -9,7 +9,8 @@ import {
     setAttemptsQueryAsync,
     setMainProgressQueryAsync,
     clearAllProgressesQueryAsync,
-    removeProgressQueryAsync, createProgressQueryAsync, shutdownServer
+    removeProgressQueryAsync, createProgressQueryAsync, shutdownServer,
+    createCircleRunQueryAsync
 } from "./server-queries.ts";
 import {Level} from "./Modules/Models/Level.ts";
 import {OutputContainer} from "./Modules/Components/OutputContainer.ts";
@@ -21,6 +22,7 @@ import {ViewModal} from "./Modules/Components/ViewModal.ts";
 import {Progress} from "./Modules/Models/Progress.ts";
 import {PlainTextContainer} from "./Modules/Components/PlainTextViewContainerl.ts";
 import { CircleRunsViewModal } from "./Modules/Components/CircleRunsViewModal.ts";
+import { CircleRun } from "./Modules/Models/CircleRun.ts";
 
 let levels: Level[];
 let filteredLevels: Level[];
@@ -172,7 +174,7 @@ async function clearAttemptsAsync(levelId: number): Promise<void> {
 
 async function addAttemptsAsync(levelId: number):Promise<void> {
     try {
-        await setAttemptsQueryAsync(levelId, getAttemptsCount(), true);
+        await setAttemptsQueryAsync(levelId, getAttemptsCount('attempts-count-input'), true);
         await updateModalLevelInfo(levelId);
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     } catch (error: any) {
@@ -182,7 +184,7 @@ async function addAttemptsAsync(levelId: number):Promise<void> {
 
 async function setAttemptsAsync(levelId: number): Promise<void> {
     try {
-        await setAttemptsQueryAsync(levelId, getAttemptsCount(), false);
+        await setAttemptsQueryAsync(levelId, getAttemptsCount('attempts-count-input'), false);
         await updateModalLevelInfo(levelId);
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     }
@@ -203,7 +205,7 @@ async function setMainProgressAsync(levelId: number): Promise<void> {
 
 async function createProgress(levelId: number): Promise<void> {
     try {
-        const progressString = getProgressString();
+        const progressString = getProgressString('progress-input');
 
         await createProgressQueryAsync(new Progress(progressString), levelId);
         await updateModalLevelInfo(levelId);
@@ -246,6 +248,26 @@ async function shutdownApplication(): Promise<void> {
         window.location.href = '../../assets/pages/blank.html';
         await shutdownServer();
         window.close();
+    } catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
+async function addRun(levelId: number): Promise<void> {
+    try {
+        const attempts = getAttemptsCount('cr-attempts-input');
+        clearInputs(document.getElementById('cr-attempts-input') as HTMLInputElement);
+
+        const circleRun: CircleRun = {
+            id: 0,
+            attempts: attempts,
+            count: 0,
+            createdAt: new Date(),
+            levelId: levelId
+        };
+
+        await createCircleRunQueryAsync(circleRun, levelId);
+        await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
         openMessageModal(error.message);
     }
@@ -296,9 +318,9 @@ function setupViewModalListeners(): void {
 function setupCircleRunsViewModalListeners(): void {
     setupModalEventListeners();
 
-    const modal: HTMLElement = document.querySelector('.level-view__content') as HTMLElement;
-    // const buttons: NodeListOf<HTMLButtonElement> = modal.querySelectorAll('button');
-    // buttons.forEach(button => button.addEventListener('click', event => viewModalInputsClickHandle(event.target as HTMLElement)))
+    const modal: HTMLElement = document.querySelector('.circle-run-view__content') as HTMLElement;
+    const buttons: NodeListOf<HTMLButtonElement> = modal.querySelectorAll('button');
+    buttons.forEach(button => button.addEventListener('click', event => circleRunsViewModalInputsClickHandle(event.target as HTMLElement)))
 }
 
 function setupCreationModalEventListeners() {
@@ -321,6 +343,7 @@ interface ClickAttribute {
     action: string;
     innerIndex?: number;
 }
+
 function getTargetAttributes(target: HTMLElement): ClickAttribute {
     if (!target) {
         throw new Error('Target not found');
@@ -405,6 +428,16 @@ function viewModalInputsClickHandle(target: HTMLElement) {
     }
 }
 
+function circleRunsViewModalInputsClickHandle(target: HTMLElement) {
+    const attributes = getTargetAttributes(target);
+
+    switch(attributes.action) {
+        case 'add-run':
+            addRun(attributes.index);
+            break;
+    }
+}
+
 
 //Modals interactions
 
@@ -451,7 +484,7 @@ function openCircleRunsViewModal(id: number) {
     render('.page', circleRunsViewModal.getHTML());
     circleRunsViewModal.applyAttemptsChartConfig();
     circleRunsViewModal.applyCountsChartConfig();
-    
+
     setupCircleRunsViewModalListeners();
 
 }
@@ -471,11 +504,33 @@ async function updateModalLevelInfo(levelId: number): Promise<void> {
 
         if (!viewModalContent) return;
 
-        let progressInputText = getProgressString();
+        let progressInputText = getProgressString('progress-input');
         viewModalContent.innerHTML = viewModal.getContent();
 
-        setProgressString(progressInputText);
+        setProgressString(progressInputText, 'progress-input');
         setupViewModalListeners();
+    }
+    catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
+async function updateCircleRunModalLevelInfo(levelId: number): Promise<void> {
+    try {
+        await updateAll();
+
+        const level = getLocalLevel(levelId);
+
+        let viewModalContent = document.querySelector('.circle-run-view__content');
+        const circleRunViewModal = new CircleRunsViewModal(level);
+
+        if(!viewModalContent) return;
+
+        viewModalContent.innerHTML = circleRunViewModal.getContent();
+        circleRunViewModal.applyAttemptsChartConfig();
+        circleRunViewModal.applyCountsChartConfig();
+
+        setupCircleRunsViewModalListeners();
     }
     catch (error: any) {
         openMessageModal(error.message);
@@ -512,8 +567,8 @@ function selectDifficulty(containers: NodeListOf<Element>, target: HTMLElement) 
     target.classList.add('selected');
 }
 
-function getAttemptsCount(): number {
-    const attemptsString = (document.getElementById('attempts-count-input') as HTMLInputElement).value;
+function getAttemptsCount(htmlId: string): number {
+    const attemptsString = (document.getElementById(htmlId) as HTMLInputElement).value;
 
     if(!isNum(attemptsString)) {
         openMessageModal('Fill correct attempts count');
@@ -524,7 +579,7 @@ function getAttemptsCount(): number {
 }
 
 function getMainProgressCount(): number {
-    const progressString = getProgressString();
+    const progressString = getProgressString('progress-input');
 
     if(!validateProgressInput(progressString)) {
         throw new Error('Fill correct progress count');
@@ -533,12 +588,12 @@ function getMainProgressCount(): number {
     return parseInt(progressString);
 }
 
-function getProgressString(): string {
-    return (document.getElementById('progress-input') as HTMLInputElement).value;
+function getProgressString(htmlId: string): string {
+    return (document.getElementById(htmlId) as HTMLInputElement).value;
 }
 
-function setProgressString(text: string): void {
-    (document.getElementById('progress-input') as HTMLInputElement).value = text;
+function setProgressString(text: string, htmlId: string): void {
+    (document.getElementById(htmlId) as HTMLInputElement).value = text;
 }
 
 //Validators

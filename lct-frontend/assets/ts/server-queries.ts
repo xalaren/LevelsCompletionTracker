@@ -1,3 +1,4 @@
+import { CircleRun } from "./Modules/Models/CircleRun.ts";
 import { Level } from "./Modules/Models/Level";
 import {Progress} from "./Modules/Models/Progress.ts";
 
@@ -274,6 +275,31 @@ export async function clearAllProgressesQueryAsync(levelId: number) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+            });
+
+        await serverResponse.json()
+            .then(data => {
+                if(data.error) {
+                    throw new Error(data.resultMessage);
+                }
+            });
+    }
+    catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+export async function createCircleRunQueryAsync(circleRun: CircleRun, levelId: number) {
+    const endpointName: string = `CircleRunController/create`;
+    try {
+        const serverResponse = await fetch(`${url}${endpointName}?levelId=${levelId}`,
+            {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(circleRun),
             });
 
         await serverResponse.json()

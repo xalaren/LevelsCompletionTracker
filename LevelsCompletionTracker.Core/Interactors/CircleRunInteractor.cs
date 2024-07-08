@@ -55,8 +55,8 @@ namespace LevelsCompletionTracker.Core.Interactors
                 }
                 else
                 {
-                    existCircleRun.Attempts = circleRunDto.Attempts;
-                    existCircleRun.Count = circleRunDto.Count;
+                    existCircleRun.Attempts += circleRunDto.Attempts;
+                    existCircleRun.Count++;
                 }
 
                 circleRunRepository.Update(existCircleRun);

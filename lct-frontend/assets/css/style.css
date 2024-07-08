@@ -411,9 +411,44 @@ input[type=text] {
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
+.input-gray::-webkit-input-placeholder {
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.input-gray::-moz-placeholder {
+  -moz-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.input-gray:-ms-input-placeholder {
+  -ms-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.input-gray::-ms-input-placeholder {
+  -ms-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.input-gray::placeholder {
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
 .input-gray:focus {
   background-color: #f3edff;
   color: #5200ff;
+}
+.input-gray:focus::-webkit-input-placeholder {
+  color: #370e6b;
+}
+.input-gray:focus::-moz-placeholder {
+  color: #370e6b;
+}
+.input-gray:focus:-ms-input-placeholder {
+  color: #370e6b;
+}
+.input-gray:focus::-ms-input-placeholder {
+  color: #370e6b;
+}
+.input-gray:focus::placeholder {
+  color: #370e6b;
 }
 
 .dynamic-font {
@@ -926,7 +961,27 @@ input[type=text] {
   grid-template-columns: 1fr auto;
   gap: 50px;
 }
+@media (max-width: 990px) {
+  .circle-run-view__content {
+    -ms-grid-columns: none;
+    grid-template-columns: none;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+  }
+  .circle-run-view__content > *:nth-child(1) {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+  }
+  .circle-run-view__content > *:nth-child(2) {
+    -ms-grid-row: 2;
+    -ms-grid-column: 1;
+  }
+}
 
 .circle-run-view__left > *:not(:last-child) {
   margin-bottom: 40px;
+}
+
+.chart {
+  font-family: "Golos Text";
 }

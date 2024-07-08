@@ -335,9 +335,17 @@ input[type="text"] {
     font-weight: 500;
     transition: .3s ease-in-out;
 
+    &::placeholder {
+        transition: .3s ease-in-out;
+    }
+
     &:focus {
         background-color: $light-violet;
         color: $main-violet;
+
+        &::placeholder {
+            color: $dark-violet;
+        }
     }
 }
 
@@ -766,10 +774,19 @@ input[type="text"] {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 50px;
+
+    @media (max-width: 990px) {
+       grid-template-columns: none;
+       grid-template-rows: auto auto;
+    }
 }
 
 .circle-run-view__left {
     >*:not(:last-child) {
         margin-bottom: 40px;
     }
+}
+
+.chart {
+    font-family: 'Golos Text';
 }

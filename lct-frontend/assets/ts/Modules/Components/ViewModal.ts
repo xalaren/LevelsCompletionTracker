@@ -33,7 +33,7 @@ export class ViewModal extends Modal {
                     <h3 class="content__progress-percent medium-30-violet-shadow" id="main-progress-count">${this.level.mainProgress}%</h3>
                 </div>
 
-                <button class="violet-tp" data-index="${this.level.id}" data-action="open-circle-runs">Circle runs feature</button>
+                <button class="violet-tp" data-index="${this.level.id}" data-action="open-circle-runs">Circle runs</button>
     
             </section>
 
@@ -41,7 +41,7 @@ export class ViewModal extends Modal {
             <section class="level-view__attempt-block">
                 <h3 class="medium-30-violet-shadow attempt-block__total" id="attempts-counter">${this.level.attempts} attempts</h3>
                 <nav class="attempt-block__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
-                    <input type="text" class="input-gray" id="attempts-count-input">
+                    <input type="text" class="input-gray" id="attempts-count-input" placeholder="Attempts...">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-attempts">Add attempts</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="set-attempts">Set attempts</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-attempts">Clear current</button>
@@ -51,13 +51,12 @@ export class ViewModal extends Modal {
             <section class="level-view__extra-progresses">
                 <h3 class="medium-30">Progresses:</h3>
                     <nav class="extra-progresses__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
-                    <input type="text" class="input-gray" id="progress-input">
+                    <input type="text" class="input-gray" id="progress-input" placeholder="Progress...">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="set-main-progress">Set main progress</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-extra-progress">Add extra progress</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="get-progresses">Plain text</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-progresses">Clear all</button>
                 </nav>
-            </section>
     `
 
         level.progressContainers.forEach(container => {

@@ -23,6 +23,7 @@ export class CircleRunsViewModal extends Modal {
 
         const delimeter = Math.round((Math.max(...attempts) / attempts.length));
         const max = Math.max(...attempts) + delimeter;
+        const min = 0;
 
         const circleRunLineChart = new Chart(ctx, {
             type: 'line',
@@ -46,11 +47,11 @@ export class CircleRunsViewModal extends Modal {
                         }
                     },
                     y: {
-                        min: 0,
+                        min: min,
                         max: max,
                         title: {
                             display: true,
-                            text: 'Value'
+                            text: 'Attempts on runs'
                         }
                     }
                 }
@@ -68,6 +69,7 @@ export class CircleRunsViewModal extends Modal {
 
         const delimeter = Math.round((Math.max(...counts) / counts.length));
         const max = Math.max(...counts) + delimeter;
+        const min = 0;
 
         const circleRunLineChart = new Chart(ctx, {
             type: 'line',
@@ -87,15 +89,15 @@ export class CircleRunsViewModal extends Modal {
                     x: {
                         title: {
                             display: true,
-                            text: 'Date'
+                            text: 'Date',
                         }
                     },
                     y: {
-                        min: 0,
+                        min: min,
                         max: max,
                         title: {
                             display: true,
-                            text: 'Value'
+                            text: 'Circle runs count'
                         }
                     }
                 }
@@ -108,10 +110,10 @@ export class CircleRunsViewModal extends Modal {
     private build(level: Level) {
         this.content = `
         <div class="circle-run-view__left">
-                <h3 class="medium-30-violet-shadow attempt-block__total" id="circle-runs-counter">${this.level.circleRunsTotalCount} circle runs</h3>
+                <h3 class="medium-30-violet-shadow attempt-block__total" id="cr-counter">${this.level.circleRunsTotalCount} circle runs</h3>
                 <h3 class="medium-30-violet-shadow attempt-block__total" id="cr-attempts-counter">${this.level.circleRunsTotalAttempts} total attempts</h3>
                 <nav class="attempt-block__controls ${level.status == Statuses.Abandoned ? 'disabled' : ''}">
-                    <input type="text" class="input-gray" id="cr-attempts-count-input">
+                    <input type="text" class="input-gray" id="cr-attempts-input" placeholder="Attempts...">
                     <button class="violet-tp" data-index="${this.level.id}" data-action="add-run">Add run</button>
                     <button class="violet-tp" data-index="${this.level.id}" data-action="clear-runs">Clear runs</button>
                 </nav>
@@ -123,7 +125,7 @@ export class CircleRunsViewModal extends Modal {
                         <p class="label-black">${new Date(circleRun.createdAt).toLocaleDateString()}</p>
                         <ul class="progresses__container">
                              <li class="progress__item">
-                                <h3 class="outfit-25-gray-medium">${circleRun.count} run: ${circleRun.attempts} att.</h3>
+                                <h3 class="outfit-25-gray-medium">${circleRun.count} runs: ${circleRun.attempts} att.</h3>
                                 <button class="progress__delete-button" 
                                         data-index="${level.id}" 
                                         data-innerindex="${circleRun.id}" 
