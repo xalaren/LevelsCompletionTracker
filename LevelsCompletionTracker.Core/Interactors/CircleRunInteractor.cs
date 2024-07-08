@@ -57,9 +57,9 @@ namespace LevelsCompletionTracker.Core.Interactors
                 {
                     existCircleRun.Attempts += circleRunDto.Attempts;
                     existCircleRun.Count++;
-                }
 
-                circleRunRepository.Update(existCircleRun);
+                    circleRunRepository.Update(existCircleRun);
+                }
 
                 levelRepository.Update(level);
                 unitOfWork.Commit();
