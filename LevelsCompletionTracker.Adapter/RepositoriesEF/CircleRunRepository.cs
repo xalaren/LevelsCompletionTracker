@@ -2,6 +2,7 @@
 using LevelsCompletionTracker.Adapter.Helpers;
 using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LevelsCompletionTracker.Adapter.RepositoriesEF
 {
@@ -14,25 +15,26 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
             this.context = context;
         }
 
+        public async Task CreateAsync(CircleRun circleRun)
+        {
+            if(circleRun == null)
+            {
+                throw new ArgumentNullException(nameof(circleRun), "Circle run was null");
+            }
+
+            await context.AddAsync(circleRun);
+        }
+
         public async Task<CircleRun?> FindByDateTimeInLevel(int levelId, DateTime date)
         {
-            var level = await context.Levels.FindAsync(levelId);
-            
-            if(level == null)
+            var circleRuns = await context.CircleRuns.Where(circleRun => circleRun.LevelId == levelId).ToArrayAsync();
+
+            if(circleRuns.Length == 0)
             {
-                throw new ArgumentNullException(nameof(level), "Уровень не был найден"); 
+                return null;
             }
 
-
-            var circleRun = level.CircleRuns.FirstOrDefault(circleRun =>
-               circleRun.CreatedAt.IsComparedByDate(date));
-
-            if (level == null)
-            {
-                throw new ArgumentNullException("", "Level was null or empty");
-            }
-
-            return circleRun;
+            return circleRuns.FirstOrDefault(circleRun => circleRun.CreatedAt.IsComparedByDate(date));
         }
 
         public void Update(CircleRun circleRun)

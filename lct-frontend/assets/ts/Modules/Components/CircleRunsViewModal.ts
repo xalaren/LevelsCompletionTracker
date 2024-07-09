@@ -18,8 +18,10 @@ export class CircleRunsViewModal extends Modal {
     applyAttemptsChartConfig() {
         const ctx = document.getElementById('attempts-chart') as HTMLCanvasElement;
 
-        const dates = this.level.circleRuns.map(cr => new Date(cr.createdAt).toLocaleDateString());
-        const attempts = this.level.circleRuns.map(cr => cr.attempts);
+        let reversedCircleRuns = [...this.level.circleRuns].reverse();
+
+        const dates = reversedCircleRuns.map(cr => new Date(cr.createdAt).toLocaleDateString());
+        const attempts = reversedCircleRuns.map(cr => cr.attempts);
 
         const delimeter = Math.round((Math.max(...attempts) / attempts.length));
         const max = Math.max(...attempts) + delimeter;
@@ -64,8 +66,10 @@ export class CircleRunsViewModal extends Modal {
     applyCountsChartConfig() {
         const ctx = document.getElementById('counts-chart') as HTMLCanvasElement;
 
-        const dates = this.level.circleRuns.map(cr => new Date(cr.createdAt).toLocaleDateString());
-        const counts = this.level.circleRuns.map(cr => cr.count);
+        let reversedCircleRuns = [...this.level.circleRuns].reverse();
+
+        const dates = reversedCircleRuns.map(cr => new Date(cr.createdAt).toLocaleDateString());
+        const counts = reversedCircleRuns.map(cr => cr.count);
 
         const delimeter = Math.round((Math.max(...counts) / counts.length));
         const max = Math.max(...counts) + delimeter;

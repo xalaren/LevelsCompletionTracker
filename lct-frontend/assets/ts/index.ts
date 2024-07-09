@@ -266,8 +266,6 @@ async function addRun(levelId: number): Promise<void> {
             createdAt: new Date(),
         };
 
-        console.log(circleRun);
-
         await createCircleRunQueryAsync(circleRun);
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {

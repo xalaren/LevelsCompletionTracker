@@ -12,7 +12,7 @@ namespace LevelsCompletionTracker.Core.Interactors
         private readonly ICircleRunRepository circleRunRepository;
         private readonly ILevelRepository levelRepository;
 
-        public CircleRunInteractor(ICircleRunRepository circleRunRepository, IUnitOfWork unitOfWork, ILevelRepository levelRepository = null)
+        public CircleRunInteractor(ICircleRunRepository circleRunRepository, IUnitOfWork unitOfWork, ILevelRepository levelRepository)
         {
             this.circleRunRepository = circleRunRepository;
             this.unitOfWork = unitOfWork;
@@ -28,7 +28,7 @@ namespace LevelsCompletionTracker.Core.Interactors
                     return new Response()
                     {
                         Error = true,
-                        ResultMessage = "Progress was null or empty",
+                        ResultMessage = "Circle run was null or empty",
                     };
                 }
 
@@ -48,10 +48,10 @@ namespace LevelsCompletionTracker.Core.Interactors
                 if (existCircleRun == null)
                 {
                     existCircleRun = circleRunDto.ToEntity();
-
+                    existCircleRun.Count++;
                     existCircleRun.CreatedAt = DateTime.Now;
 
-                    level.CircleRuns.Add(existCircleRun);
+                    await circleRunRepository.CreateAsync(existCircleRun);
                 }
                 else
                 {
@@ -61,7 +61,6 @@ namespace LevelsCompletionTracker.Core.Interactors
                     circleRunRepository.Update(existCircleRun);
                 }
 
-                levelRepository.Update(level);
                 unitOfWork.Commit();
 
                 return new Response()
