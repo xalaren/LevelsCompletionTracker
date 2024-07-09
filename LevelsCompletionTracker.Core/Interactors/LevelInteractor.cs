@@ -320,12 +320,12 @@ namespace LevelsCompletionTracker.Core.Interactors
         {
             try
             {
-                if (attempts < 0)
+                if (attempts < 0 || attempts > 1_000_000)
                 {
                     return new Response()
                     {
                         Error = true,
-                        ResultMessage = "Attempts cannot be negative",
+                        ResultMessage = "Attempts out of range",
                     };
                 }
 

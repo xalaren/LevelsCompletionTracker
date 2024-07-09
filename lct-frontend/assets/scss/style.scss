@@ -288,15 +288,19 @@ input[type="text"] {
     display: flex;
     justify-content: center;
     z-index: 10;
+    padding: 20px;
 }
 
 .modal__container {
-    min-width: 400px;
-    min-height: 200px;
+    min-width: 200px;
+    min-height: 150px;
     background: $white;
     border-radius: 10px;
     position: relative;
-    margin: auto auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
 }
 
 .modal__close-button {
@@ -324,6 +328,7 @@ input[type="text"] {
 
 .modal__content {
     padding: $common-margin;
+
 }
 
 .input-gray {
@@ -847,4 +852,8 @@ input[type="text"] {
     100% {
         opacity: 0;
     }
+}
+
+.error-message {
+    color: $red;
 }

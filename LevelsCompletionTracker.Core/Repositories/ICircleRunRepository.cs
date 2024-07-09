@@ -11,6 +11,5 @@ namespace LevelsCompletionTracker.Core.Repositories
         void Remove(CircleRun? circleRun);
         void RemoveAllFromLevel(int levelId);
         void Update(CircleRun circleRun);
-        void Remove(CircleRun circleRun);
     }
 }

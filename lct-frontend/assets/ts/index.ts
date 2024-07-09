@@ -98,7 +98,7 @@ async function loadLevelsAsync(): Promise<void> {
         levels = await getAllLevelsQueryAsync();
         mapLevelArrays();
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -108,7 +108,7 @@ async function createLevelAsync(): Promise<void> {
     const selectedContainer = document.querySelector('.selected') as HTMLElement;
 
     if (!nameInput || nameInput.value == '') {
-        openMessageModal('Name was empty');
+        openMessageModal('Name was empty', 'error-message');
         return;
     }
 
@@ -138,7 +138,7 @@ async function createLevelAsync(): Promise<void> {
         })
     }
     catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
         return;
     }
 }
@@ -150,7 +150,7 @@ async function changeLevelStatusAsync(levelId: number, status: string): Promise<
         closeLoader();
         updateAll();
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -158,7 +158,7 @@ async function changeLevelPriorityAsync(levelId: number, increase: boolean) {
     try {
         await changeLevelPriorityQueryAsync(levelId, increase).then(updateAll);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -178,7 +178,7 @@ async function clearAttemptsAsync(levelId: number): Promise<void> {
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
 
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -188,7 +188,7 @@ async function addAttemptsAsync(levelId: number): Promise<void> {
         await updateModalLevelInfo(levelId);
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -199,7 +199,7 @@ async function setAttemptsAsync(levelId: number): Promise<void> {
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     }
     catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -212,7 +212,7 @@ async function setMainProgressAsync(levelId: number): Promise<void> {
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     } catch (error: any) {
         closeLoader();
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -223,7 +223,7 @@ async function createProgress(levelId: number): Promise<void> {
         await updateModalLevelInfo(levelId);
     } catch (error: any) {
         closeLoader();
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -232,7 +232,7 @@ async function removeProgress(levelId: number, progressId: number): Promise<void
         await removeProgressQueryAsync(progressId);
         await updateModalLevelInfo(levelId);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -243,7 +243,7 @@ async function getProgressesAsPlainText(levelId: number): Promise<void> {
         const container = new PlainTextContainer(progressContainers);
         openMessageModal(container.getHTML());
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -252,7 +252,7 @@ async function clearProgresses(levelId: number): Promise<void> {
         await clearAllProgressesQueryAsync(levelId);
         await updateModalLevelInfo(levelId);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -262,7 +262,7 @@ async function shutdownApplication(): Promise<void> {
         await shutdownServer();
         window.close();
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -282,7 +282,7 @@ async function addRun(levelId: number): Promise<void> {
         await createCircleRunQueryAsync(circleRun);
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -291,7 +291,7 @@ async function removeCircleRun(levelId: number, circleRunId: number): Promise<vo
         await removeCircleRunQueryAsync(circleRunId);
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -300,7 +300,7 @@ async function clearCircleRuns(levelId: number): Promise<void> {
         await removeAllCircleRunsFromLevelQueryAsync(levelId);
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -565,7 +565,7 @@ async function updateModalLevelInfo(levelId: number): Promise<void> {
         setupViewModalListeners();
     }
     catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -587,7 +587,7 @@ async function updateCircleRunModalLevelInfo(levelId: number): Promise<void> {
         setupCircleRunsViewModalListeners();
     }
     catch (error: any) {
-        openMessageModal(error.message);
+        openMessageModal(error.message, 'error-message');
     }
 }
 
@@ -625,8 +625,7 @@ function getAttemptsCount(htmlId: string): number {
     const attemptsString = (document.getElementById(htmlId) as HTMLInputElement).value;
 
     if (!isNum(attemptsString)) {
-        openMessageModal('Fill correct attempts count');
-        return 0;
+        throw new Error('Fill correct attempts count');
     }
 
     return parseInt(attemptsString);

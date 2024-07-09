@@ -357,15 +357,25 @@ input[type=text] {
       -ms-flex-pack: center;
           justify-content: center;
   z-index: 10;
+  padding: 20px;
 }
 
 .modal__container {
-  min-width: 400px;
-  min-height: 200px;
+  min-width: 200px;
+  min-height: 150px;
   background: #ffffff;
   border-radius: 10px;
   position: relative;
-  margin: auto auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: auto;
 }
 
 .modal__close-button {
@@ -1073,4 +1083,7 @@ input[type=text] {
   100% {
     opacity: 0;
   }
+}
+.error-message {
+  color: #ff2f3b;
 }

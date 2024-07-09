@@ -33,6 +33,15 @@ namespace LevelsCompletionTracker.Core.Interactors
                     };
                 }
 
+                if (circleRunDto.Attempts < 0 || circleRunDto.Attempts > 1_000_000)
+                {
+                    return new Response()
+                    {
+                        Error = true,
+                        ResultMessage = "Attempts out of range",
+                    };
+                }
+
                 var level = await levelRepository.GetAsync(circleRunDto.LevelId);
 
                 if (level == null)
