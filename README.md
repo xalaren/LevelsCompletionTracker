@@ -10,7 +10,8 @@
 2. View and setting the main progress of current levels
 3. View and setting the further progresses of levels (include the date of creating the progress)
 4. View and setting attempts
-4. Manage the level list
+5. Manage the level list
+6. (NEW!) View and setting the circle runs progresses
 
 ## Preview
 <img src="./github-content/preview.png" alt="drawing"/>
