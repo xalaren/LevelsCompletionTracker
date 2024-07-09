@@ -30,10 +30,10 @@ namespace LevelsCompletionTracker.Core.Mappers
                 ProgressContainers = level.ProgressContainers
                     .Select(container => container.ToDto())
                     .Where(container => container.Progresses.Count > 0)
-                    .OrderByDescending(container => container.Id).ToList(),
+                    .OrderByDescending(container => container.Id)
+                    .ToList(),
                 CircleRuns = level.CircleRuns
                     .Select(circleRun => circleRun.ToDto())
-                    .Where(circleRun => circleRun.Count > 0)
                     .OrderByDescending(circleRun => circleRun.CreatedAt)
                     .ToList(),
             };

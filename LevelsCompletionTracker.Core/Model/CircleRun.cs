@@ -10,5 +10,6 @@
         public DateTime CreatedAt { get; set; }
         public int Attempts { get; set; }
 
+        public int Count { get; set; }
     }
 }

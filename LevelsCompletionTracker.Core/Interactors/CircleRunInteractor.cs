@@ -1,4 +1,5 @@
 ﻿using LevelsCompletionTracker.Core.Mappers;
+using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
 using LevelsCompletionTracker.Core.Transaction;
 using LevelsCompletionTracker.Shared.DataTransferObjects;
@@ -12,7 +13,7 @@ namespace LevelsCompletionTracker.Core.Interactors
         private readonly ICircleRunRepository circleRunRepository;
         private readonly ILevelRepository levelRepository;
 
-        public CircleRunInteractor(ICircleRunRepository circleRunRepository, IUnitOfWork unitOfWork, ILevelRepository levelRepository = null)
+        public CircleRunInteractor(ICircleRunRepository circleRunRepository, IUnitOfWork unitOfWork, ILevelRepository levelRepository)
         {
             this.circleRunRepository = circleRunRepository;
             this.unitOfWork = unitOfWork;
@@ -28,7 +29,7 @@ namespace LevelsCompletionTracker.Core.Interactors
                     return new Response()
                     {
                         Error = true,
-                        ResultMessage = "Progress was null or empty",
+                        ResultMessage = "Circle run was null or empty",
                     };
                 }
 
@@ -48,10 +49,10 @@ namespace LevelsCompletionTracker.Core.Interactors
                 if (existCircleRun == null)
                 {
                     existCircleRun = circleRunDto.ToEntity();
-
+                    existCircleRun.Count++;
                     existCircleRun.CreatedAt = DateTime.Now;
 
-                    level.CircleRuns.Add(existCircleRun);
+                    await circleRunRepository.CreateAsync(existCircleRun);
                 }
                 else
                 {
@@ -61,7 +62,6 @@ namespace LevelsCompletionTracker.Core.Interactors
                     circleRunRepository.Update(existCircleRun);
                 }
 
-                levelRepository.Update(level);
                 unitOfWork.Commit();
 
                 return new Response()
@@ -69,6 +69,65 @@ namespace LevelsCompletionTracker.Core.Interactors
                     Error = false,
                     ResultMessage = "Circle run successfully added"
                 };
+            }
+            catch (Exception exception)
+            {
+                return new Response()
+                {
+                    Error = true,
+                    ResultMessage = exception.Message,
+                };
+            }
+        }
+
+        public async Task<Response> RemoveCircleRunAsync(int circleRunId)
+        {
+            try
+            {
+                CircleRun? circleRun = await circleRunRepository.GetAsync(circleRunId); 
+
+                if (circleRunRepository == null)
+                {
+                    return new Response()
+                    {
+                        Error = true,
+                        ResultMessage = "Circle run not found",
+                    };
+                }
+
+                circleRunRepository.Remove(circleRun);
+
+                unitOfWork.Commit();
+
+                return new Response()
+                {
+                    Error = false,
+                    ResultMessage = "Circle run has been successfully removed",
+                };
+            }
+            catch (Exception exception)
+            {
+                return new Response()
+                {
+                    Error = true,
+                    ResultMessage = exception.Message,
+                };
+            }
+        }
+
+        public Response RemoveAllCircleRunsFromLevel(int levelId)
+        {
+            try
+            {
+                circleRunRepository.RemoveAllFromLevel(levelId);
+                unitOfWork.Commit();
+
+                return new Response()
+                {
+                    Error = false,
+                    ResultMessage = "Circle runs has been successfully removed",
+                };
+
             }
             catch (Exception exception)
             {

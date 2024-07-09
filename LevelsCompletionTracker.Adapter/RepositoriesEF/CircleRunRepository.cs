@@ -2,6 +2,7 @@
 using LevelsCompletionTracker.Adapter.Helpers;
 using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LevelsCompletionTracker.Adapter.RepositoriesEF
 {
@@ -14,25 +15,49 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
             this.context = context;
         }
 
+        public async Task CreateAsync(CircleRun circleRun)
+        {
+            if(circleRun == null)
+            {
+                throw new ArgumentNullException(nameof(circleRun), "Circle run was null");
+            }
+
+            await context.AddAsync(circleRun);
+        }
+
         public async Task<CircleRun?> FindByDateTimeInLevel(int levelId, DateTime date)
         {
-            var level = await context.Levels.FindAsync(levelId);
-            
-            if(level == null)
+            var circleRuns = await context.CircleRuns.Where(circleRun => circleRun.LevelId == levelId).ToArrayAsync();
+
+            if(circleRuns.Length == 0)
             {
-                throw new ArgumentNullException(nameof(level), "Уровень не был найден"); 
+                return null;
             }
 
+            return circleRuns.FirstOrDefault(circleRun => circleRun.CreatedAt.IsComparedByDate(date));
+        }
 
-            var circleRun = level.CircleRuns.FirstOrDefault(circleRun =>
-               circleRun.CreatedAt.IsComparedByDate(date));
+        public async Task<CircleRun?> GetAsync(int circleRunId)
+        {
+            return await context.CircleRuns.FindAsync(circleRunId);
+        }
 
-            if (level == null)
+        public void Remove(CircleRun? circleRun)
+        {
+            if(circleRun == null)
             {
-                throw new ArgumentNullException("", "Level was null or empty");
+                throw new ArgumentNullException(nameof(circleRun), "Circle run was null");
             }
 
-            return circleRun;
+            context.Remove(circleRun);
+        }
+
+        public void RemoveAllFromLevel(int levelId)
+        {
+            var circleRuns = context.CircleRuns
+                .Where(circleRun => circleRun.LevelId == levelId);
+
+            context.RemoveRange(circleRuns);
         }
 
         public void Update(CircleRun circleRun)
