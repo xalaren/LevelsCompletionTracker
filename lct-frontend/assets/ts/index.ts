@@ -14,17 +14,18 @@ import {
     removeCircleRunQueryAsync,
     removeAllCircleRunsFromLevelQueryAsync
 } from "./server-queries.ts";
-import {Level} from "./Modules/Models/Level.ts";
-import {OutputContainer} from "./Modules/Components/OutputContainer.ts";
-import {LevelContainer} from "./Modules/Components/LevelContainer.ts";
-import {CreationModal} from "./Modules/Components/CreationModal.ts";
-import {MediumLabelContainer} from "./Modules/Components/MediumLabelContainer.ts";
-import {Modal} from "./Modules/Components/Modal.ts";
-import {ViewModal} from "./Modules/Components/ViewModal.ts";
-import {Progress} from "./Modules/Models/Progress.ts";
-import {PlainTextContainer} from "./Modules/Components/PlainTextViewContainerl.ts";
+import { Level } from "./Modules/Models/Level.ts";
+import { OutputContainer } from "./Modules/Components/OutputContainer.ts";
+import { LevelContainer } from "./Modules/Components/LevelContainer.ts";
+import { CreationModal } from "./Modules/Components/CreationModal.ts";
+import { MediumLabelContainer } from "./Modules/Components/MediumLabelContainer.ts";
+import { Modal } from "./Modules/Components/Modal.ts";
+import { ViewModal } from "./Modules/Components/ViewModal.ts";
+import { Progress } from "./Modules/Models/Progress.ts";
+import { PlainTextContainer } from "./Modules/Components/PlainTextViewContainerl.ts";
 import { CircleRunsViewModal } from "./Modules/Components/CircleRunsViewModal.ts";
 import { CircleRun } from "./Modules/Models/CircleRun.ts";
+import { PopupLoader } from "./Modules/Components/PopupLoader.ts";
 
 let levels: Level[];
 let filteredLevels: Level[];
@@ -66,7 +67,7 @@ function filterLevels(value: string) {
 function getLocalLevel(levelId: number): Level {
     const level = levels.find(level => level.id === levelId);
 
-    if(!level) throw new Error('Level not found');
+    if (!level) throw new Error('Level not found');
 
     return level;
 }
@@ -78,6 +79,7 @@ function displayLevels(levels: Level[]) {
         displayMessageOutput('No levels here yet');
         return;
     }
+
     for (let i = 0; i < levels.length; i++) {
         const levelContainer = new LevelContainer(levels[i]);
         render('.levels__list', levelContainer.getHTML());
@@ -92,6 +94,7 @@ async function updateAll() {
 
 async function loadLevelsAsync(): Promise<void> {
     try {
+        displayMessageOutput('Loading...');
         levels = await getAllLevelsQueryAsync();
         mapLevelArrays();
     } catch (error: any) {
@@ -124,7 +127,7 @@ async function createLevelAsync(): Promise<void> {
 
     let difficulty = selectedContainer.dataset.type;
 
-    if(!difficulty) return;
+    if (!difficulty) return;
 
     const level = new Level(nameInput.value, authorInput.value, difficulty);
 
@@ -134,7 +137,7 @@ async function createLevelAsync(): Promise<void> {
             updateAll();
         })
     }
-    catch(error: any) {
+    catch (error: any) {
         openMessageModal(error.message);
         return;
     }
@@ -142,7 +145,10 @@ async function createLevelAsync(): Promise<void> {
 
 async function changeLevelStatusAsync(levelId: number, status: string): Promise<void> {
     try {
-        await changeLevelStatusQueryAsync(levelId, status).then(updateAll);
+        activateLoader();
+        await changeLevelStatusQueryAsync(levelId, status);
+        closeLoader();
+        updateAll();
     } catch (error: any) {
         openMessageModal(error.message);
     }
@@ -158,7 +164,9 @@ async function changeLevelPriorityAsync(levelId: number, increase: boolean) {
 
 async function removeLevelAsync(levelId: number): Promise<void> {
     try {
+        activateLoader();
         await removeLevelQueryAsync(levelId).then(updateAll);
+        closeLoader();
     } catch (error: any) {
         displayMessageOutput(error.message, 'red-selection');
     }
@@ -174,7 +182,7 @@ async function clearAttemptsAsync(levelId: number): Promise<void> {
     }
 }
 
-async function addAttemptsAsync(levelId: number):Promise<void> {
+async function addAttemptsAsync(levelId: number): Promise<void> {
     try {
         await setAttemptsQueryAsync(levelId, getAttemptsCount('attempts-count-input'), true);
         await updateModalLevelInfo(levelId);
@@ -197,10 +205,13 @@ async function setAttemptsAsync(levelId: number): Promise<void> {
 
 async function setMainProgressAsync(levelId: number): Promise<void> {
     try {
+        activateLoader();
         await setMainProgressQueryAsync(levelId, getMainProgressCount());
+        closeLoader();
         await updateModalLevelInfo(levelId);
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
     } catch (error: any) {
+        closeLoader();
         openMessageModal(error.message);
     }
 }
@@ -208,10 +219,10 @@ async function setMainProgressAsync(levelId: number): Promise<void> {
 async function createProgress(levelId: number): Promise<void> {
     try {
         const progressString = getProgressString('progress-input');
-
         await createProgressQueryAsync(new Progress(progressString), levelId);
         await updateModalLevelInfo(levelId);
     } catch (error: any) {
+        closeLoader();
         openMessageModal(error.message);
     }
 }
@@ -307,7 +318,7 @@ function setupStaticEventListeners(): void {
 
     const shutdownButton: HTMLElement | null = document.getElementById('shutdown-button');
 
-    if(shutdownButton) {
+    if (shutdownButton) {
         shutdownButton.addEventListener('click', shutdownApplication);
     }
 }
@@ -379,7 +390,7 @@ function getTargetAttributes(target: HTMLElement): ClickAttribute {
     let action = button.dataset.action!;
     let innerIndex: number | undefined = undefined;
 
-    if(button.hasAttribute('data-innerindex')) {
+    if (button.hasAttribute('data-innerindex')) {
         innerIndex = parseInt(button.dataset.innerindex!);
     }
 
@@ -418,7 +429,7 @@ function levelContainerInputsClickHandle(target: HTMLElement) {
 function viewModalInputsClickHandle(target: HTMLElement) {
     const attributes = getTargetAttributes(target);
 
-    switch(attributes.action) {
+    switch (attributes.action) {
         case 'clear-attempts':
             clearAttemptsAsync(attributes.index).then();
             break;
@@ -452,7 +463,7 @@ function viewModalInputsClickHandle(target: HTMLElement) {
 function circleRunsViewModalInputsClickHandle(target: HTMLElement) {
     const attributes = getTargetAttributes(target);
 
-    switch(attributes.action) {
+    switch (attributes.action) {
         case 'add-run':
             addRun(attributes.index);
             break;
@@ -476,6 +487,7 @@ function displayMessageOutput(text: string, messageColor?: string): void {
     clearElement('.levels__list');
     render('.levels__list', container.getHTML());
 }
+
 function openMessageModal(message: string, className?: string) {
     const labelContainer = new MediumLabelContainer(message, className);
     const modalContainer = new Modal(labelContainer.getHTML());
@@ -492,7 +504,7 @@ function openCreationModal() {
 function openViewModal(id: number) {
     let level = levels.find(level => level.id === id);
 
-    if(!level) return;
+    if (!level) return;
 
     let viewModal = new ViewModal(level);
 
@@ -503,7 +515,7 @@ function openViewModal(id: number) {
 function openCircleRunsViewModal(id: number) {
     let level = levels.find(level => level.id === id);
 
-    if(!level) return;
+    if (!level) return;
 
     let circleRunsViewModal = new CircleRunsViewModal(level);
 
@@ -517,6 +529,22 @@ function openCircleRunsViewModal(id: number) {
 
 function closeModal(target: Element | HTMLElement): void {
     target.remove();
+}
+
+function activateLoader() {
+    let popupLoader = new PopupLoader();
+
+    render('.page', popupLoader.getHTML());
+}
+
+function closeLoader() {
+    let popupLoaders = document.querySelectorAll('.popup-loader');
+    popupLoaders.forEach(loader => (loader as HTMLElement).classList.add('popup-loader__fading'));
+    setTimeout(
+        () => {
+            popupLoaders.forEach(loader => (loader as HTMLElement).remove());
+        }, 1000
+    );
 }
 
 async function updateModalLevelInfo(levelId: number): Promise<void> {
@@ -550,7 +578,7 @@ async function updateCircleRunModalLevelInfo(levelId: number): Promise<void> {
         let viewModalContent = document.querySelector('.circle-run-view__content');
         const circleRunViewModal = new CircleRunsViewModal(level);
 
-        if(!viewModalContent) return;
+        if (!viewModalContent) return;
 
         viewModalContent.innerHTML = circleRunViewModal.getContent();
         circleRunViewModal.applyAttemptsChartConfig();
@@ -596,7 +624,7 @@ function selectDifficulty(containers: NodeListOf<Element>, target: HTMLElement) 
 function getAttemptsCount(htmlId: string): number {
     const attemptsString = (document.getElementById(htmlId) as HTMLInputElement).value;
 
-    if(!isNum(attemptsString)) {
+    if (!isNum(attemptsString)) {
         openMessageModal('Fill correct attempts count');
         return 0;
     }
@@ -607,7 +635,7 @@ function getAttemptsCount(htmlId: string): number {
 function getMainProgressCount(): number {
     const progressString = getProgressString('progress-input');
 
-    if(!validateProgressInput(progressString)) {
+    if (!validateProgressInput(progressString)) {
         throw new Error('Fill correct progress count');
     }
 
