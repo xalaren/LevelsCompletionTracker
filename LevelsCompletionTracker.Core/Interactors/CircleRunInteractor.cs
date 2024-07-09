@@ -1,4 +1,5 @@
 ﻿using LevelsCompletionTracker.Core.Mappers;
+using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
 using LevelsCompletionTracker.Core.Transaction;
 using LevelsCompletionTracker.Shared.DataTransferObjects;
@@ -68,6 +69,65 @@ namespace LevelsCompletionTracker.Core.Interactors
                     Error = false,
                     ResultMessage = "Circle run successfully added"
                 };
+            }
+            catch (Exception exception)
+            {
+                return new Response()
+                {
+                    Error = true,
+                    ResultMessage = exception.Message,
+                };
+            }
+        }
+
+        public async Task<Response> RemoveCircleRunAsync(int circleRunId)
+        {
+            try
+            {
+                CircleRun? circleRun = await circleRunRepository.GetAsync(circleRunId); 
+
+                if (circleRunRepository == null)
+                {
+                    return new Response()
+                    {
+                        Error = true,
+                        ResultMessage = "Circle run not found",
+                    };
+                }
+
+                circleRunRepository.Remove(circleRun);
+
+                unitOfWork.Commit();
+
+                return new Response()
+                {
+                    Error = false,
+                    ResultMessage = "Circle run has been successfully removed",
+                };
+            }
+            catch (Exception exception)
+            {
+                return new Response()
+                {
+                    Error = true,
+                    ResultMessage = exception.Message,
+                };
+            }
+        }
+
+        public Response RemoveAllCircleRunsFromLevel(int levelId)
+        {
+            try
+            {
+                circleRunRepository.RemoveAllFromLevel(levelId);
+                unitOfWork.Commit();
+
+                return new Response()
+                {
+                    Error = false,
+                    ResultMessage = "Circle runs has been successfully removed",
+                };
+
             }
             catch (Exception exception)
             {

@@ -313,3 +313,53 @@ export async function createCircleRunQueryAsync(circleRun: CircleRun) {
         throw new Error(error.message);
     }
 }
+
+export async function removeCircleRunQueryAsync(circleRunId: number) {
+    const endpointName: string = `CircleRunController/remove`;
+    try {
+        const serverResponse = await fetch(`${url}${endpointName}?circleRunId=${circleRunId}`,
+            {
+                method: 'DELETE',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+        await serverResponse.json()
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.resultMessage);
+                }
+            });
+    }
+    catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+export async function removeAllCircleRunsFromLevelQueryAsync(levelId: number) {
+    const endpointName: string = `CircleRunController/remove-all`;
+    try {
+        const serverResponse = await fetch(`${url}${endpointName}?levelId=${levelId}`,
+            {
+                method: 'DELETE',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+        await serverResponse.json()
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.resultMessage);
+                }
+            });
+    }
+    catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+

@@ -37,6 +37,29 @@ namespace LevelsCompletionTracker.Adapter.RepositoriesEF
             return circleRuns.FirstOrDefault(circleRun => circleRun.CreatedAt.IsComparedByDate(date));
         }
 
+        public async Task<CircleRun?> GetAsync(int circleRunId)
+        {
+            return await context.CircleRuns.FindAsync(circleRunId);
+        }
+
+        public void Remove(CircleRun? circleRun)
+        {
+            if(circleRun == null)
+            {
+                throw new ArgumentNullException(nameof(circleRun), "Circle run was null");
+            }
+
+            context.Remove(circleRun);
+        }
+
+        public void RemoveAllFromLevel(int levelId)
+        {
+            var circleRuns = context.CircleRuns
+                .Where(circleRun => circleRun.LevelId == levelId);
+
+            context.RemoveRange(circleRuns);
+        }
+
         public void Update(CircleRun circleRun)
         {
             context.CircleRuns.Update(circleRun);

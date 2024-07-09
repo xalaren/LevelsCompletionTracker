@@ -7,6 +7,9 @@ namespace LevelsCompletionTracker.Core.Repositories
     {
         Task CreateAsync(CircleRun circleRun);
         Task<CircleRun?> FindByDateTimeInLevel(int levelId, DateTime now);
+        Task<CircleRun?> GetAsync(int circleRunId);
+        void Remove(CircleRun? circleRun);
+        void RemoveAllFromLevel(int levelId);
         void Update(CircleRun circleRun);
     }
 }

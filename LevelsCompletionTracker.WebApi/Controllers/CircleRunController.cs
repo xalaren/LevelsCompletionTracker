@@ -21,5 +21,17 @@ namespace LevelsCompletionTracker.WebApi.Controllers
         {
             return await circleRunInteractor.CreateCircleRunAsync(circleRunDto);
         }
+
+        [HttpDelete("remove")]
+        public async Task<Response> RemoveCircleRunAsync(int circleRunId)
+        {
+            return await circleRunInteractor.RemoveCircleRunAsync(circleRunId);
+        }
+
+        [HttpDelete("remove-all")]
+        public Response RemoveAllCircleRunsFromLevel(int levelId)
+        {
+            return circleRunInteractor.RemoveAllCircleRunsFromLevel(levelId);
+        }
     }
 }

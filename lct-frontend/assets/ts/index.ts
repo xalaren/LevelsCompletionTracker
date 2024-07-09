@@ -10,7 +10,9 @@ import {
     setMainProgressQueryAsync,
     clearAllProgressesQueryAsync,
     removeProgressQueryAsync, createProgressQueryAsync, shutdownServer,
-    createCircleRunQueryAsync
+    createCircleRunQueryAsync,
+    removeCircleRunQueryAsync,
+    removeAllCircleRunsFromLevelQueryAsync
 } from "./server-queries.ts";
 import {Level} from "./Modules/Models/Level.ts";
 import {OutputContainer} from "./Modules/Components/OutputContainer.ts";
@@ -273,6 +275,25 @@ async function addRun(levelId: number): Promise<void> {
     }
 }
 
+async function removeCircleRun(levelId: number, circleRunId: number): Promise<void> {
+    try {
+        await removeCircleRunQueryAsync(circleRunId);
+        await updateCircleRunModalLevelInfo(levelId);
+    } catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
+async function clearCircleRuns(levelId: number): Promise<void> {
+    try {
+        await removeAllCircleRunsFromLevelQueryAsync(levelId);
+        await updateCircleRunModalLevelInfo(levelId);
+    } catch (error: any) {
+        openMessageModal(error.message);
+    }
+}
+
+
 //Event listeners setup
 
 function setupStaticEventListeners(): void {
@@ -435,9 +456,14 @@ function circleRunsViewModalInputsClickHandle(target: HTMLElement) {
         case 'add-run':
             addRun(attributes.index);
             break;
+        case 'run-remove':
+            removeCircleRun(attributes.index, attributes.innerIndex!);
+            break;
+        case 'clear-runs':
+            clearCircleRuns(attributes.index);
+            break;
     }
 }
-
 
 //Modals interactions
 

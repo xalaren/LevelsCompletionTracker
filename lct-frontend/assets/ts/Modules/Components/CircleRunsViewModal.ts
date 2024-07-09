@@ -133,7 +133,7 @@ export class CircleRunsViewModal extends Modal {
                                 <button class="progress__delete-button" 
                                         data-index="${level.id}" 
                                         data-innerindex="${circleRun.id}" 
-                                        data-action="progress-remove">×</button>
+                                        data-action="run-remove">×</button>
                             </li>
                         </ul>
                     </div>
