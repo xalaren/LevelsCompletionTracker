@@ -2,15 +2,8 @@
 
 namespace LevelsCompletionTracker.WebApi.Endpoints.LevelEndpoints
 {
-    public class LevelEndpoints : Group
+    public class LevelEndpoints : GroupEndpoint
     {
-        public LevelEndpoints()
-        {
-            Configure("LevelController", ep =>
-            {
-                ep.DontAutoTag();
-                ep.Description(builder => builder.WithTags("LevelController"));
-            });
-        }
+        public LevelEndpoints() : base("LevelController", "LevelController") { }
     }
 }
