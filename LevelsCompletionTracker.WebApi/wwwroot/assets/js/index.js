@@ -15229,7 +15229,7 @@ async function loadLevelsAsync() {
     levels = await getAllLevelsQueryAsync();
     mapLevelArrays();
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function createLevelAsync() {
@@ -15237,7 +15237,7 @@ async function createLevelAsync() {
   const authorInput = document.getElementById("author-text-input");
   const selectedContainer = document.querySelector(".selected");
   if (!nameInput || nameInput.value == "") {
-    openMessageModal("Name was empty");
+    openMessageModal("Name was empty", "error-message");
     return;
   }
   if (!authorInput) {
@@ -15260,7 +15260,7 @@ async function createLevelAsync() {
       updateAll();
     });
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
     return;
   }
 }
@@ -15271,14 +15271,14 @@ async function changeLevelStatusAsync(levelId, status) {
     closeLoader();
     updateAll();
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function changeLevelPriorityAsync(levelId, increase) {
   try {
     await changeLevelPriorityQueryAsync(levelId, increase).then(updateAll);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function removeLevelAsync(levelId) {
@@ -15296,7 +15296,7 @@ async function clearAttemptsAsync(levelId) {
     await updateModalLevelInfo(levelId);
     clearInputs(document.getElementById("attempts-count-input"));
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function addAttemptsAsync(levelId) {
@@ -15305,7 +15305,7 @@ async function addAttemptsAsync(levelId) {
     await updateModalLevelInfo(levelId);
     clearInputs(document.getElementById("attempts-count-input"));
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function setAttemptsAsync(levelId) {
@@ -15314,7 +15314,7 @@ async function setAttemptsAsync(levelId) {
     await updateModalLevelInfo(levelId);
     clearInputs(document.getElementById("attempts-count-input"));
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function setMainProgressAsync(levelId) {
@@ -15326,7 +15326,7 @@ async function setMainProgressAsync(levelId) {
     clearInputs(document.getElementById("attempts-count-input"));
   } catch (error) {
     closeLoader();
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function createProgress(levelId) {
@@ -15336,7 +15336,7 @@ async function createProgress(levelId) {
     await updateModalLevelInfo(levelId);
   } catch (error) {
     closeLoader();
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function removeProgress(levelId, progressId) {
@@ -15344,7 +15344,7 @@ async function removeProgress(levelId, progressId) {
     await removeProgressQueryAsync(progressId);
     await updateModalLevelInfo(levelId);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function getProgressesAsPlainText(levelId) {
@@ -15353,7 +15353,7 @@ async function getProgressesAsPlainText(levelId) {
     const container = new PlainTextContainer(progressContainers);
     openMessageModal(container.getHTML());
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function clearProgresses(levelId) {
@@ -15361,7 +15361,7 @@ async function clearProgresses(levelId) {
     await clearAllProgressesQueryAsync(levelId);
     await updateModalLevelInfo(levelId);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function shutdownApplication() {
@@ -15370,7 +15370,7 @@ async function shutdownApplication() {
     await shutdownServer();
     window.close();
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function addRun(levelId) {
@@ -15387,7 +15387,7 @@ async function addRun(levelId) {
     await createCircleRunQueryAsync(circleRun);
     await updateCircleRunModalLevelInfo(levelId);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function removeCircleRun(levelId, circleRunId) {
@@ -15395,7 +15395,7 @@ async function removeCircleRun(levelId, circleRunId) {
     await removeCircleRunQueryAsync(circleRunId);
     await updateCircleRunModalLevelInfo(levelId);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function clearCircleRuns(levelId) {
@@ -15403,7 +15403,7 @@ async function clearCircleRuns(levelId) {
     await removeAllCircleRunsFromLevelQueryAsync(levelId);
     await updateCircleRunModalLevelInfo(levelId);
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 function setupStaticEventListeners() {
@@ -15430,6 +15430,7 @@ function setupModalEventListeners() {
       closeModal(modalContainer);
     });
   });
+  disableScrollForBody();
 }
 function setupViewModalListeners() {
   setupModalEventListeners();
@@ -15580,6 +15581,10 @@ function openCircleRunsViewModal(id) {
 }
 function closeModal(target) {
   target.remove();
+  const anyModal = document.querySelector(".modal");
+  if (anyModal)
+    return;
+  enableScrollForBody();
 }
 function activateLoader() {
   let popupLoader = new PopupLoader();
@@ -15608,7 +15613,7 @@ async function updateModalLevelInfo(levelId) {
     setProgressString(progressInputText, "progress-input");
     setupViewModalListeners();
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 async function updateCircleRunModalLevelInfo(levelId) {
@@ -15624,7 +15629,7 @@ async function updateCircleRunModalLevelInfo(levelId) {
     circleRunViewModal.applyCountsChartConfig();
     setupCircleRunsViewModalListeners();
   } catch (error) {
-    openMessageModal(error.message);
+    openMessageModal(error.message, "error-message");
   }
 }
 function render(className, innerHTML) {
@@ -15644,6 +15649,18 @@ function clearElement(className) {
 function clearInputs(...elements2) {
   elements2.forEach((element) => element.value = "");
 }
+function disableScrollForBody() {
+  const bodyElement = document.querySelector("body");
+  if (!bodyElement)
+    return;
+  bodyElement.style.overflow = "hidden";
+}
+function enableScrollForBody() {
+  const bodyElement = document.querySelector("body");
+  if (!bodyElement)
+    return;
+  bodyElement.style.overflow = "auto";
+}
 function selectDifficulty(containers, target) {
   containers.forEach((container) => container.classList.remove("selected"));
   target.classList.add("selected");
@@ -15651,8 +15668,7 @@ function selectDifficulty(containers, target) {
 function getAttemptsCount(htmlId) {
   const attemptsString = document.getElementById(htmlId).value;
   if (!isNum(attemptsString)) {
-    openMessageModal("Fill correct attempts count");
-    return 0;
+    throw new Error("Fill correct attempts count");
   }
   return parseInt(attemptsString);
 }

@@ -337,6 +337,8 @@ function setupModalEventListeners(): void {
             closeModal(modalContainer);
         });
     });
+
+    disableScrollForBody();
 }
 
 function setupViewModalListeners(): void {
@@ -529,6 +531,11 @@ function openCircleRunsViewModal(id: number) {
 
 function closeModal(target: Element | HTMLElement): void {
     target.remove();
+
+    const anyModal = document.querySelector('.modal');
+
+    if (anyModal) return;
+    enableScrollForBody();
 }
 
 function activateLoader() {
@@ -614,6 +621,22 @@ function clearElement(className: string): void {
 
 function clearInputs(...elements: HTMLInputElement[]): void {
     elements.forEach(element => element.value = '');
+}
+
+function disableScrollForBody() {
+    const bodyElement = document.querySelector('body') as HTMLElement;
+
+    if (!bodyElement) return;
+
+    bodyElement.style.overflow = "hidden";
+}
+
+function enableScrollForBody() {
+    const bodyElement = document.querySelector('body') as HTMLElement;
+
+    if (!bodyElement) return;
+
+    bodyElement.style.overflow = "auto";
 }
 
 function selectDifficulty(containers: NodeListOf<Element>, target: HTMLElement) {

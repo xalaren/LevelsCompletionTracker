@@ -1,3 +1,5 @@
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using LevelsCompletionTracker.Adapter.ContextsEF;
 using LevelsCompletionTracker.Adapter.RepositoriesEF;
 using LevelsCompletionTracker.Adapter.Transaction;
@@ -5,8 +7,6 @@ using LevelsCompletionTracker.Core.Interactors;
 using LevelsCompletionTracker.Core.Repositories;
 using LevelsCompletionTracker.Core.Transaction;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace LevelsCompletionTracker.WebApi
 {
@@ -41,28 +41,37 @@ namespace LevelsCompletionTracker.WebApi
             builder.Services.AddScoped<ProgressInteractor>();
             builder.Services.AddScoped<CircleRunInteractor>();
 
+            builder.Services.SwaggerDocument(o =>
+            {
+                o.DocumentSettings = s =>
+                {
+                    s.DocumentName = "lcpt";
+                    s.Title = "LCPT Api";
+                    s.Version = "v0.1a";
+                };
+            });
 
-            builder.Services.AddControllers();
+            builder.Services
+                .AddFastEndpoints()
+                .AddSwaggerDocument();
+
+
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(options =>
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Levels Completion Tracker", Version = "v0.1a" })
-            );
 
             var app = builder.Build();
 
-            if (builder.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app
+                .UseFastEndpoints(c =>
+                {
+                    c.Endpoints.RoutePrefix = "api";
+                })
+                .UseSwaggerGen();
 
             app.OpenBrowserWhenReady();
 
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
-
-            app.MapControllers();
 
             app.MapPost("/api/shutdown", () =>
             {
@@ -71,6 +80,7 @@ namespace LevelsCompletionTracker.WebApi
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
 
             app.Run();
         }
