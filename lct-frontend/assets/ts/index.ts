@@ -94,7 +94,6 @@ async function updateAll() {
 
 async function loadLevelsAsync(): Promise<void> {
     try {
-        displayMessageOutput('Loading...');
         levels = await getAllLevelsQueryAsync();
         mapLevelArrays();
     } catch (error: any) {

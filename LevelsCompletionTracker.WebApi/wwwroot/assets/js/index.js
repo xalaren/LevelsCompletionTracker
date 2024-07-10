@@ -15225,7 +15225,6 @@ async function updateAll() {
 }
 async function loadLevelsAsync() {
   try {
-    displayMessageOutput("Loading...");
     levels = await getAllLevelsQueryAsync();
     mapLevelArrays();
   } catch (error) {
