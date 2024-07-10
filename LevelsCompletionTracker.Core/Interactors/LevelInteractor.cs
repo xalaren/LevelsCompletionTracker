@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Linq.Expressions;
-using LevelsCompletionTracker.Core.Mappers;
+﻿using LevelsCompletionTracker.Core.Mappers;
 using LevelsCompletionTracker.Core.Model;
 using LevelsCompletionTracker.Core.Repositories;
 using LevelsCompletionTracker.Core.Transaction;

@@ -1007,9 +1007,9 @@ input[type=text] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-.attempt-block__controls *:not(:last-child) {
-  margin-right: 10px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 10px;
 }
 
 .level-view__extra-progresses > *:not(:last-child) {
@@ -1125,6 +1125,10 @@ input[type=text] {
   margin-bottom: 40px;
 }
 
+.circle-run-view, .level-view {
+  z-index: 10 !important;
+}
+
 .circle-run-view__content {
   display: -ms-grid;
   display: grid;
@@ -1164,7 +1168,7 @@ input[type=text] {
   width: 100%;
   height: 100dvh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 20;
   padding: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
