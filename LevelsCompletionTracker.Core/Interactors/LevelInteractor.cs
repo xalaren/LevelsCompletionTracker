@@ -199,10 +199,20 @@ namespace LevelsCompletionTracker.Core.Interactors
             }
         }
 
-        public async Task<Response> ChangeStatusOfTheLevelAsync(int id, string state)
+        public async Task<Response> ChangeStatusOfTheLevelAsync(int id, string? state)
         {
             try
             {
+                if(string.IsNullOrWhiteSpace(state))
+                {
+                    return new Response()
+                    {
+                        Error = true,
+                        ResultMessage = "State was empty"
+                    };
+                }
+
+
                 var level = await levelRepository.GetAsync(id);
                 state = state.ToLower();
 

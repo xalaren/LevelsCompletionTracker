@@ -15292,7 +15292,9 @@ async function removeLevelAsync(levelId) {
 }
 async function clearAttemptsAsync(levelId) {
   try {
+    activateLoader();
     await setAttemptsQueryAsync(levelId, 0, false);
+    closeLoader();
     await updateModalLevelInfo(levelId);
     clearInputs(document.getElementById("attempts-count-input"));
   } catch (error) {
@@ -15358,7 +15360,9 @@ async function getProgressesAsPlainText(levelId) {
 }
 async function clearProgresses(levelId) {
   try {
+    activateLoader();
     await clearAllProgressesQueryAsync(levelId);
+    closeLoader();
     await updateModalLevelInfo(levelId);
   } catch (error) {
     openMessageModal(error.message, "error-message");
@@ -15400,7 +15404,9 @@ async function removeCircleRun(levelId, circleRunId) {
 }
 async function clearCircleRuns(levelId) {
   try {
+    activateLoader();
     await removeAllCircleRunsFromLevelQueryAsync(levelId);
+    closeLoader();
     await updateCircleRunModalLevelInfo(levelId);
   } catch (error) {
     openMessageModal(error.message, "error-message");

@@ -173,7 +173,9 @@ async function removeLevelAsync(levelId: number): Promise<void> {
 }
 async function clearAttemptsAsync(levelId: number): Promise<void> {
     try {
+        activateLoader();
         await setAttemptsQueryAsync(levelId, 0, false);
+        closeLoader();
         await updateModalLevelInfo(levelId);
         clearInputs(document.getElementById('attempts-count-input') as HTMLInputElement);
 
@@ -249,7 +251,9 @@ async function getProgressesAsPlainText(levelId: number): Promise<void> {
 
 async function clearProgresses(levelId: number): Promise<void> {
     try {
+        activateLoader();
         await clearAllProgressesQueryAsync(levelId);
+        closeLoader();
         await updateModalLevelInfo(levelId);
     } catch (error: any) {
         openMessageModal(error.message, 'error-message');
@@ -297,7 +301,9 @@ async function removeCircleRun(levelId: number, circleRunId: number): Promise<vo
 
 async function clearCircleRuns(levelId: number): Promise<void> {
     try {
+        activateLoader();
         await removeAllCircleRunsFromLevelQueryAsync(levelId);
+        closeLoader();
         await updateCircleRunModalLevelInfo(levelId);
     } catch (error: any) {
         openMessageModal(error.message, 'error-message');
